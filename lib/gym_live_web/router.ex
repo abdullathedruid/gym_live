@@ -18,6 +18,7 @@ defmodule GymLiveWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    live "/workout", GymLive.Workout, :index
   end
 
   # Other scopes may use custom stacks.
