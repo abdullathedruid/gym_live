@@ -6,4 +6,3 @@ defmodule GymLiveWeb.GymLive.Workout do
     {:ok, socket}
   end
 end
-
