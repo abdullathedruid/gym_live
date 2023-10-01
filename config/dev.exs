@@ -3,7 +3,7 @@ import Config
 # Configure your database
 config :gym_live, GymLive.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "password",
   hostname: "localhost",
   database: "gym_live_dev",
   stacktrace: true,

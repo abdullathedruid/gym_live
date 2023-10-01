@@ -35,3 +35,4 @@ gym_live-*.tar
 npm-debug.log
 /assets/node_modules/
 
+.env
