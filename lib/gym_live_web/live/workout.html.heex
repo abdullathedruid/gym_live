@@ -1,6 +1,8 @@
 <div>
-  <h1>Adding new workout for <%= Calendar.strftime(DateTime.utc_now(), "%Y-%m-%d") %></h1>
-  <h1>Your workout has been running for <%= format_time(@seconds) %></h1>
+  <div class="bg-gray-100 rounded-xl text-l px-3 py-3">
+    <h1><%= generate_workout_name() %></h1>
+    <h2><%= format_time(@seconds) %></h2>
+  </div>
   <div class="py-24"></div>
   <.link href={~p"/"}>Back to homepage</.link>
 </div>

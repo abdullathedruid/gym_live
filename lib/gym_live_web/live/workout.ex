@@ -17,6 +17,11 @@ defmodule GymLiveWeb.GymLive.Workout do
     |> then(&{:noreply, &1})
   end
 
+  def generate_workout_name do
+    Timex.now()
+    |> Timex.format!("{WDshort} {AM} Workout")
+  end
+
   def format_time(seconds) do
     {h, m, s} = hhmmss(seconds)
     "#{pad_int(h)}:#{pad_int(m)}:#{pad_int(s)}"
