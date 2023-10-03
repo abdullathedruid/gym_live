@@ -4,19 +4,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
-    <.live_title suffix=" · Phoenix Framework">
+    <.live_title>
       <%= assigns[:page_title] || "GymLive" %>
     </.live_title>
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
     </script>
   </head>
-  <body class="bg-white antialiased">
+  <header class="bg-gray-300 px-6 py-3 rounded-b-xl antialiased flex-row flex justify-between">
+    <h1 class="text-xl">Stronk</h1>
     <ul class="relative z-10 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
       <%= if @current_user do %>
-        <li class="text-[0.8125rem] leading-6 text-zinc-900">
-          <%= @current_user.email %>
-        </li>
         <li>
           <.link
             href={~p"/users/settings"}
@@ -33,6 +31,13 @@
           >
             Log out
           </.link>
+        </li>
+        <li class="text-[0.8125rem] leading-6 text-zinc-900">
+          <img
+            alt="Profile image"
+            src={gravatar_url(@current_user.email)}
+            class="rounded-full w-8 h-8 border-2"
+          />
         </li>
       <% else %>
         <li>
@@ -53,6 +58,8 @@
         </li>
       <% end %>
     </ul>
+  </header>
+  <body>
     <%= @inner_content %>
   </body>
 </html>
