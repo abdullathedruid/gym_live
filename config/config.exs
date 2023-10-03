@@ -10,6 +10,10 @@ import Config
 config :gym_live,
   ecto_repos: [GymLive.Repo]
 
+config :gym_live,
+       :generators,
+       binary_id: true
+
 # Configures the endpoint
 config :gym_live, GymLiveWeb.Endpoint,
   url: [host: "localhost"],
