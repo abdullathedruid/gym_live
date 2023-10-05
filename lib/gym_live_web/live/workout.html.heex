@@ -1,8 +1,15 @@
 <div>
-  <div class="bg-gray-100 rounded-xl text-l px-3 py-3">
-    <h1><%= generate_workout_name() %></h1>
-    <h2><%= format_time(@seconds) %></h2>
-  </div>
-  <div class="py-24"></div>
+  <%= if @workout_started do %>
+    <div class="bg-gray-100 rounded-xl text-l px-3 py-3">
+      <h1><%= generate_workout_name() %></h1>
+    </div>
+    <div class="py-24"></div>
+  <% else %>
+    <div class="flex justify-center">
+      <button phx-click="start_workout" class="bg-green-400 px-4 py-4 rounded-2xl">
+        Start workout!
+      </button>
+    </div>
+  <% end %>
   <.link href={~p"/"}>Back to homepage</.link>
 </div>
