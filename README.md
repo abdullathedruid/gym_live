@@ -22,3 +22,6 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 ```sh
 docker run --name gym-live-db -e POSTGRES_PASSWORD=password -e POSTGRES_USER=postgres -d -p 5432:5432 -d --rm postgres
 ```
+
+Thoughts:
+- if user has multiple devices, they won't be in sync. Set up pubsub?
