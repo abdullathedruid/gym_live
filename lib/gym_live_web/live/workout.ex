@@ -16,11 +16,19 @@ defmodule GymLiveWeb.GymLive.Workout do
     if connected?(socket), do: :timer.send_interval(1000, self(), :tick)
     workout = Training.active_workout_for_user(socket.assigns.current_user)
 
+    set_forms = Enum.map([%Training.Set{exercise: "bench press"}], &build_set_form(&1, %{}))
+
     socket =
       assign(socket, :workout, workout)
       |> assign(:seconds, workout_duration(workout))
+      |> assign(:sets, set_forms)
 
     {:ok, socket}
+  end
+
+  defp build_set_form(item_or_changeset, params) do
+    changeset = item_or_changeset |> Training.change_set(params)
+    to_form(changeset, id: "form-#{}")
   end
 
   @impl true

@@ -20,4 +20,22 @@ defmodule GymLive.TrainingFixtures do
 
     workout
   end
+
+  @doc """
+  Generate a set.
+  """
+  def set_fixture(workout, attrs \\ %{}) do
+    {:ok, set} =
+      workout
+      |> GymLive.Training.create_set(
+        attrs
+        |> Enum.into(%{
+          exercise: "some exercise",
+          reps: 42,
+          weight: 120.5
+        })
+      )
+
+    set
+  end
 end

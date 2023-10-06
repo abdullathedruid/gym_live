@@ -55,4 +55,30 @@ defmodule GymLive.DataCase do
       end)
     end)
   end
+
+  @doc """
+  A helper that removes unloaded ecto associations form a struct. It will remove unloaded keys from the left struct and remove the same keys from the right
+  """
+  def remove_unloaded([left_elem | _] = left, right) when is_list(left) and is_list(right) do
+    keys_to_remove =
+      Map.from_struct(left_elem)
+      |> Enum.filter(fn {_k, v} -> match?(%Ecto.Association.NotLoaded{}, v) end)
+      |> Keyword.keys()
+
+    left = Enum.map(left, fn l -> Map.from_struct(l) |> Map.drop(keys_to_remove) end)
+    right = Enum.map(right, fn r -> Map.from_struct(r) |> Map.drop(keys_to_remove) end)
+
+    {left, right}
+  end
+
+  def remove_unloaded(left, right) do
+    keys_to_remove =
+      Map.from_struct(left)
+      |> Enum.filter(fn {_k, v} -> match?(%Ecto.Association.NotLoaded{}, v) end)
+      |> Keyword.keys()
+
+    left = Map.from_struct(left) |> Map.drop(keys_to_remove)
+    right = Map.from_struct(right) |> Map.drop(keys_to_remove)
+    {left, right}
+  end
 end

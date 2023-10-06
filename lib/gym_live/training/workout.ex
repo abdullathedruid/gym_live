@@ -8,6 +8,7 @@ defmodule GymLive.Training.Workout do
     field :status, Ecto.Enum, values: [:started, :completed, :deleted], default: :started
     field :title, :string
     belongs_to :user, GymLive.Account.User, foreign_key: :user_id
+    has_many :sets, GymLive.Training.Set
 
     timestamps()
   end
