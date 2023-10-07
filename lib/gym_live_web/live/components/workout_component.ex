@@ -9,15 +9,16 @@ defmodule GymLiveWeb.WorkoutComponent do
           <div :for={form <- @items} id={"list#{@workout_id}-item#{form.id}"}>
             <.simple_form for={form}>
               <div
-                class="flex"
                 phx-change="validate"
                 phx-submit="save"
                 phx-target={@myself}
-                class="min-w-0 flex-1 drag-ghost:opacity-0"
+                class="min-w-0"
                 phx-valud-id={form.data.id}
               >
-                <div class="flex-auto block text-sm leading-6 text-zinc-900">
+                <div class="flex flex-row justify-evenly space-x-4 text-sm leading-6 text-zinc-900">
                   <.input field={form[:exercise]} />
+                  <.input field={form[:weight]} />
+                  <.input field={form[:reps]} />
                 </div>
               </div>
             </.simple_form>
