@@ -22,10 +22,24 @@ defmodule GymLiveWeb.WorkoutComponent do
               </div>
             </.simple_form>
           </div>
+          <.button
+            class="mt-4"
+            phx-click={JS.push("new_set", target: @myself, value: %{workout_id: @workout_id})}
+          >
+            Add exercise
+          </.button>
         </div>
       </div>
     </div>
     """
+  end
+
+  def handle_event("new_set", %{"workout_id" => workout_id}, socket) do
+    {:ok, set} =
+      GymLive.Training.get_workout!(workout_id)
+      |> GymLive.Training.create_set(%{exercise: "bench press", weight: 0, reps: 0})
+
+    {:noreply, assign(socket, :items, [build_set_form(set, %{}) | socket.assigns.items])}
   end
 
   def update(%{workout: workout}, socket) do

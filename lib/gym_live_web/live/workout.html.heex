@@ -4,7 +4,7 @@
       <.header><%= @workout.title %></.header>
       <h2><%= Time.format_time(@seconds) %></h2>
     </div>
-    <div class="py-24">
+    <div class="py-4">
       <.live_component
         module={GymLiveWeb.WorkoutComponent}
         id="workout"
