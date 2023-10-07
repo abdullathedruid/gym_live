@@ -55,6 +55,10 @@ defmodule GymLive.Training do
     |> Workout.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:user, user)
     |> Repo.insert()
+    |> case do
+      {:ok, workout} -> {:ok, Map.put(workout, :sets, [])}
+      error -> error
+    end
   end
 
   @doc """
@@ -104,13 +108,15 @@ defmodule GymLive.Training do
     Workout.changeset(workout, attrs)
   end
 
-  @spec active_workout_for_user(User.t()) :: Workout.t() | nil
-  def active_workout_for_user(%User{} = user) do
+  @spec get_active_workout_for_user(User.t()) :: Workout.t() | nil
+  def get_active_workout_for_user(%User{} = user) do
     from(w in Workout,
       where: w.user_id == ^user.id and w.status == :started,
       order_by: [desc: w.updated_at],
       limit: 1,
-      select: w
+      select: w,
+      left_join: sets in assoc(w, :sets),
+      preload: [:sets]
     )
     |> Repo.one()
   end

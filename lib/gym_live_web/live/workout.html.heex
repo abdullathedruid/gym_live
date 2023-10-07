@@ -5,12 +5,12 @@
       <h2><%= Time.format_time(@seconds) %></h2>
     </div>
     <div class="py-24">
-      Your workout goes here
-      <div :for={form <- @sets} id={"item#{form.id}"}>
-        <.simple_form for={form} phx-value-id={form.data.id}>
-          <div class="flex"></div>
-        </.simple_form>
-      </div>
+      <.live_component
+        module={GymLiveWeb.WorkoutComponent}
+        id="workout"
+        workout_name={@workout.title}
+        workout={@workout}
+      />
     </div>
     <div class="flex justify-center items-center space-x-3">
       <button phx-click="abandon_workout" class="bg-red-400 px-4 py-4 rounded-2xl">
