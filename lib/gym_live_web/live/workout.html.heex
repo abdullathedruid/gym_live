@@ -27,6 +27,21 @@
     </div>
   <% else %>
     <div class="flex justify-center">
+      <.async_result :let={workouts} assign={@completed_workouts}>
+        <:loading>Loading completed workouts</:loading>
+        <span :if={workouts}>
+          <ul>
+            <%= for workout <- workouts do %>
+              <li><%= workout.title %>
+
+                <%= workout.inserted_at %></li>
+            <% end %>
+          </ul>
+        </span>
+      </.async_result>
+    </div>
+    <br />
+    <div class="flex justify-center">
       <button phx-click="start_workout" class="bg-green-400 px-4 py-4 rounded-2xl">
         Start workout!
       </button>

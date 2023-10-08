@@ -22,6 +22,14 @@ defmodule GymLive.Training do
     Repo.all(Workout)
   end
 
+  def list_completed_workouts_for_user(%User{} = user) do
+    from(w in Workout,
+      where: w.user_id == ^user.id and w.status == :completed,
+      order_by: [desc: w.inserted_at]
+    )
+    |> Repo.all()
+  end
+
   @doc """
   Gets a single workout.
 

@@ -21,6 +21,13 @@ defmodule GymLiveWeb.GymLive.Workout do
     socket =
       assign(socket, :workout, workout)
       |> assign(:seconds, workout_duration(workout))
+      |> assign_async(:completed_workouts, fn ->
+        {:ok,
+         %{
+           completed_workouts:
+             GymLive.Training.list_completed_workouts_for_user(socket.assigns.current_user)
+         }}
+      end)
 
     {:ok, socket}
   end
