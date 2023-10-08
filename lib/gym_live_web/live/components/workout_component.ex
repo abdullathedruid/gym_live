@@ -4,18 +4,22 @@ defmodule GymLiveWeb.WorkoutComponent do
   def render(assigns) do
     ~H"""
     <div class="bg-gray-100 py-4 rounded-lg">
-      <div class="mx-auto max-w-7xl px-4 ">
+      <div class="mx-auto max-w-7xl px-4">
         <div id={"#{@workout.id}-items"} class="grid grid-cols-1 gap-2" phx-update="stream">
-          <div :for={{id, form} <- @streams.items} id={id}>
+          <div :for={{id, form} <- @streams.items} id={id} class="">
             <.simple_form
               for={form}
               phx-change="validate"
               phx-target={@myself}
-              class="min-w-0"
               phx-value-id={form.data.id}
             >
-              <div class="flex flex-row justify-evenly space-x-4 text-sm leading-6 text-zinc-900">
-                <.input field={form[:exercise]} type="select" options={@valid_exercises} />
+              <div class="flex flex-row space-x-4 justify-evenly text-sm leading-6 text-zinc-900">
+                <.input
+                  field={form[:exercise]}
+                  type="select"
+                  options={@valid_exercises}
+                  class="grow-1"
+                />
                 <.input field={form[:weight]} phx-debounce="blur" />
                 <.input field={form[:reps]} phx-debounce="blur" />
               </div>
