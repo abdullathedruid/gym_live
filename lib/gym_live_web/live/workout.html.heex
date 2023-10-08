@@ -5,12 +5,7 @@
       <h2><%= Time.format_time(@seconds) %></h2>
     </div>
     <div class="py-4">
-      <.live_component
-        module={GymLiveWeb.WorkoutComponent}
-        id="workout"
-        workout_name={@workout.title}
-        workout={@workout}
-      />
+      <.live_component module={GymLiveWeb.WorkoutComponent} id="workout" workout={@workout} />
     </div>
     <div class="flex justify-center items-center space-x-3">
       <button phx-click="abandon_workout" class="bg-red-400 px-4 py-4 rounded-2xl">

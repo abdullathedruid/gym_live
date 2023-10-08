@@ -164,10 +164,17 @@ defmodule GymLive.Training do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_set(workout, attrs \\ %{}) do
-    %Set{}
+  def create_set(workout, attrs \\ %{})
+
+  def create_set(%Workout{id: workout_id}, attrs) do
+    %Set{workout_id: workout_id}
     |> Set.changeset(attrs)
-    |> Ecto.Changeset.put_assoc(:workout, workout)
+    |> Repo.insert()
+  end
+
+  def create_set(workout_id, attrs) do
+    %Set{workout_id: workout_id}
+    |> Set.changeset(attrs)
     |> Repo.insert()
   end
 

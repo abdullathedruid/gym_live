@@ -5,8 +5,8 @@ defmodule GymLiveWeb.WorkoutComponent do
     ~H"""
     <div class="bg-gray-100 py-4 rounded-lg">
       <div class="mx-auto max-w-7xl px-4 ">
-        <div id={"#{@workout_id}-items"} class="grid grid-cols-1 gap-2">
-          <div :for={form <- @items} id={"list#{@workout_id}-item#{form.id}"}>
+        <div id={"#{@workout.id}-items"} class="grid grid-cols-1 gap-2" phx-update="stream">
+          <div :for={{id, form} <- @streams.items} id={id}>
             <.simple_form for={form}>
               <div
                 phx-change="validate"
@@ -23,13 +23,13 @@ defmodule GymLiveWeb.WorkoutComponent do
               </div>
             </.simple_form>
           </div>
-          <.button
-            class="mt-4"
-            phx-click={JS.push("new_set", target: @myself, value: %{workout_id: @workout_id})}
-          >
-            Add exercise
-          </.button>
         </div>
+        <.button
+          class="mt-4"
+          phx-click={JS.push("new_set", target: @myself, value: %{workout_id: @workout.id})}
+        >
+          Add exercise
+        </.button>
       </div>
     </div>
     """
@@ -37,17 +37,18 @@ defmodule GymLiveWeb.WorkoutComponent do
 
   def handle_event("new_set", %{"workout_id" => workout_id}, socket) do
     {:ok, set} =
-      GymLive.Training.get_workout!(workout_id)
-      |> GymLive.Training.create_set(%{exercise: "bench press", weight: 0, reps: 0})
+      GymLive.Training.create_set(workout_id, %{exercise: "bench press", weight: 0, reps: 0})
 
-    {:noreply, assign(socket, :items, [build_set_form(set, %{}) | socket.assigns.items])}
+    {:noreply, socket |> stream_insert(:items, build_set_form(set, %{}))}
   end
 
   def update(%{workout: workout}, socket) do
     set_forms = Enum.map(workout.sets, &build_set_form(&1, %{}))
 
     socket =
-      socket |> assign(workout_id: workout.id, workout_title: workout.title, items: set_forms)
+      socket
+      |> assign(workout: workout)
+      |> stream(:items, set_forms)
 
     {:ok, socket}
   end
