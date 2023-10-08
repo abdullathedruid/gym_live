@@ -16,7 +16,7 @@ defmodule GymLiveWeb.WorkoutComponent do
                 phx-valud-id={form.data.id}
               >
                 <div class="flex flex-row justify-evenly space-x-4 text-sm leading-6 text-zinc-900">
-                  <.input field={form[:exercise]} />
+                  <.input field={form[:exercise]} type="select" options={@valid_exercises} />
                   <.input field={form[:weight]} />
                   <.input field={form[:reps]} />
                 </div>
@@ -48,6 +48,20 @@ defmodule GymLiveWeb.WorkoutComponent do
     socket =
       socket
       |> assign(workout: workout)
+      |> assign(
+        valid_exercises: [
+          "Squat",
+          "Press",
+          "Chins",
+          "Face Pulls",
+          "Dips",
+          "Deadlift",
+          "Bench Press",
+          "Rows",
+          "Curls",
+          "Shrugs"
+        ]
+      )
       |> stream(:items, set_forms)
 
     {:ok, socket}
