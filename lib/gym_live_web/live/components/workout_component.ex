@@ -7,19 +7,17 @@ defmodule GymLiveWeb.WorkoutComponent do
       <div class="mx-auto max-w-7xl px-4 ">
         <div id={"#{@workout.id}-items"} class="grid grid-cols-1 gap-2" phx-update="stream">
           <div :for={{id, form} <- @streams.items} id={id}>
-            <.simple_form for={form}>
-              <div
-                phx-change="validate"
-                phx-submit="save"
-                phx-target={@myself}
-                class="min-w-0"
-                phx-valud-id={form.data.id}
-              >
-                <div class="flex flex-row justify-evenly space-x-4 text-sm leading-6 text-zinc-900">
-                  <.input field={form[:exercise]} type="select" options={@valid_exercises} />
-                  <.input field={form[:weight]} />
-                  <.input field={form[:reps]} />
-                </div>
+            <.simple_form
+              for={form}
+              phx-change="validate"
+              phx-target={@myself}
+              class="min-w-0"
+              phx-value-id={form.data.id}
+            >
+              <div class="flex flex-row justify-evenly space-x-4 text-sm leading-6 text-zinc-900">
+                <.input field={form[:exercise]} type="select" options={@valid_exercises} />
+                <.input field={form[:weight]} phx-debounce="blur" />
+                <.input field={form[:reps]} phx-debounce="blur" />
               </div>
             </.simple_form>
           </div>
@@ -40,6 +38,15 @@ defmodule GymLiveWeb.WorkoutComponent do
       GymLive.Training.create_set(workout_id, %{exercise: "bench press", weight: 0, reps: 0})
 
     {:noreply, socket |> stream_insert(:items, build_set_form(set, %{}))}
+  end
+
+  def handle_event("validate", %{"id" => set_id, "set" => set_params}, socket) do
+    {_, item_or_changeset} =
+      %GymLive.Training.Set{id: set_id, workout_id: socket.assigns.workout.id}
+      |> GymLive.Training.update_set(set_params)
+
+    item_form = build_set_form(item_or_changeset, %{}, :validate)
+    {:noreply, stream_insert(socket, :items, item_form)}
   end
 
   def update(%{workout: workout}, socket) do
@@ -67,8 +74,11 @@ defmodule GymLiveWeb.WorkoutComponent do
     {:ok, socket}
   end
 
-  defp build_set_form(item_or_changeset, params) do
-    changeset = item_or_changeset |> GymLive.Training.change_set(params)
+  defp build_set_form(item_or_changeset, params, action \\ nil) do
+    changeset =
+      item_or_changeset
+      |> GymLive.Training.change_set(params)
+      |> Map.put(:action, action)
 
     to_form(changeset, id: "form-#{changeset.data.workout_id}-#{changeset.data.id}")
   end

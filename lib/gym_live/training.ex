@@ -221,7 +221,7 @@ defmodule GymLive.Training do
       %Ecto.Changeset{data: %Set{}}
 
   """
-  def change_set(%Set{} = set, attrs \\ %{}) do
-    Set.changeset(set, attrs)
+  def change_set(set_or_changeset, attrs \\ %{}) do
+    Set.changeset(set_or_changeset, attrs)
   end
 end
