@@ -4,6 +4,7 @@ defmodule GymLive.Training.Set do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
+  @timestamps_opts [type: :utc_datetime]
   schema "sets" do
     field :exercise, :string
     field :reps, :integer

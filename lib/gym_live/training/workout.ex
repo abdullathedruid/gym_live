@@ -4,6 +4,7 @@ defmodule GymLive.Training.Workout do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
+  @timestamps_opts [type: :utc_datetime]
   schema "workouts" do
     field :status, Ecto.Enum, values: [:started, :completed, :deleted], default: :started
     field :title, :string
