@@ -5,12 +5,12 @@ defmodule GymLiveWeb.WorkoutComponent do
     ~H"""
     <div class="bg-gray-100 py-4 rounded-lg">
       <div class="mx-auto max-w-7xl px-4">
+        <div class="flex flex-row space-x-4 justify-between">
+          <div>Exercise</div>
+          <div>Weight (kg)</div>
+          <div>Reps</div>
+        </div>
         <div id={"#{@workout.id}-items"} class="grid grid-cols-1 gap-2" phx-update="stream">
-          <div class="flex flex-row space-x-4 justify-between">
-            <div>Exercise</div>
-            <div>Weight (kg)</div>
-            <div>Reps</div>
-          </div>
           <div :for={{id, form} <- @streams.items} id={id} class="">
             <.simple_form
               for={form}
@@ -22,6 +22,14 @@ defmodule GymLiveWeb.WorkoutComponent do
                 <.input field={form[:exercise]} type="select" options={@valid_exercises} />
                 <.input field={form[:weight]} phx-debounce="blur" />
                 <.input field={form[:reps]} phx-debounce="blur" />
+                <.button
+                  :if={form.data.id}
+                  type="button"
+                  class="w-10 mt-1 flex-none"
+                  phx-click={JS.push("delete", target: @myself, value: %{id: form.data.id})}
+                >
+                  <.icon name="hero-x-mark" />
+                </.button>
               </div>
             </.simple_form>
           </div>
@@ -51,6 +59,12 @@ defmodule GymLiveWeb.WorkoutComponent do
 
     item_form = build_set_form(item_or_changeset, %{}, :validate)
     {:noreply, stream_insert(socket, :items, item_form)}
+  end
+
+  def handle_event("delete", %{"id" => set_id}, socket) do
+    set = GymLive.Training.get_set!(set_id)
+    {:ok, _} = GymLive.Training.delete_set(set)
+    {:noreply, stream_delete(socket, :items, build_set_form(set, %{}))}
   end
 
   def update(%{workout: workout}, socket) do
