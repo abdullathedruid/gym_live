@@ -112,7 +112,7 @@ defmodule GymLive.Training do
   def get_active_workout_for_user(%User{} = user) do
     from(w in Workout,
       where: w.user_id == ^user.id and w.status == :started,
-      order_by: [desc: w.updated_at],
+      order_by: [desc: w.inserted_at],
       limit: 1,
       select: w,
       left_join: sets in assoc(w, :sets),

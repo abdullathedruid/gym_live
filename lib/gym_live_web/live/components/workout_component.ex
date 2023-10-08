@@ -14,12 +14,7 @@ defmodule GymLiveWeb.WorkoutComponent do
               phx-value-id={form.data.id}
             >
               <div class="flex flex-row space-x-4 justify-evenly text-sm leading-6 text-zinc-900">
-                <.input
-                  field={form[:exercise]}
-                  type="select"
-                  options={@valid_exercises}
-                  class="grow-1"
-                />
+                <.input field={form[:exercise]} type="select" options={@valid_exercises} />
                 <.input field={form[:weight]} phx-debounce="blur" />
                 <.input field={form[:reps]} phx-debounce="blur" />
               </div>
