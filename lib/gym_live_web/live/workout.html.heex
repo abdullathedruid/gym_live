@@ -8,12 +8,21 @@
       <.live_component module={GymLiveWeb.WorkoutComponent} id="workout" workout={@workout} />
     </div>
     <div class="flex justify-center items-center space-x-3">
-      <button phx-click="abandon_workout" class="bg-red-400 px-4 py-4 rounded-2xl">
-        Abandon workout :(
-      </button>
-      <div>
-        <subtitle>Don't do it</subtitle>
-        <p class="text-xs italic">Stay stronk</p>
+      <div class="flex justify-between space-x-4">
+        <div>
+          <button phx-click="save_workout" class="bg-green-500 px-4 py-4 rounded-2xl">
+            Save workout
+          </button>
+        </div>
+        <div>
+          <button phx-click="abandon_workout" class="bg-red-400 px-2 py-2 rounded-2xl">
+            Abandon workout :(
+          </button>
+          <div>
+            <subtitle>Don't do it</subtitle>
+            <p class="text-xs italic">Stay stronk</p>
+          </div>
+        </div>
       </div>
     </div>
   <% else %>

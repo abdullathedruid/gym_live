@@ -39,6 +39,12 @@ defmodule GymLiveWeb.GymLive.Workout do
   end
 
   @impl true
+  def handle_event("save_workout", _value, socket) do
+    Training.update_workout(socket.assigns.workout, %{status: :completed})
+    {:noreply, assign(socket, :workout, nil) |> assign(:seconds, 0)}
+  end
+
+  @impl true
   def handle_event("abandon_workout", _value, socket) do
     Training.delete_workout(socket.assigns.workout)
 
