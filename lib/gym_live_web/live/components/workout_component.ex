@@ -53,7 +53,11 @@ defmodule GymLiveWeb.WorkoutComponent do
     workout_inserted = workout.inserted_at
     exercise_inserted = set.data.inserted_at
 
-    Timex.diff(exercise_inserted, workout_inserted, :seconds) |> Time.format_time()
+    if workout_inserted && exercise_inserted do
+      Timex.diff(exercise_inserted, workout_inserted, :seconds) |> Time.format_time()
+    else
+      ""
+    end
   end
 
   def handle_event("new_set", %{"workout_id" => workout_id}, socket) do
