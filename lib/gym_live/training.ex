@@ -4,6 +4,7 @@ defmodule GymLive.Training do
   """
 
   import Ecto.Query, warn: false
+  alias GymLiveWeb.GymLive.Workout
   alias GymLive.Repo
 
   alias GymLive.Training.Workout
@@ -122,9 +123,7 @@ defmodule GymLive.Training do
       where: w.user_id == ^user.id and w.status == :started,
       order_by: [desc: w.inserted_at],
       limit: 1,
-      select: w,
-      left_join: sets in assoc(w, :sets),
-      preload: [:sets]
+      select: w
     )
     |> Repo.one()
   end
@@ -142,6 +141,15 @@ defmodule GymLive.Training do
   """
   def list_sets do
     Repo.all(Set)
+  end
+
+  def list_sets_for_workout(%Workout{} = workout) do
+    from(s in Set,
+      where: s.workout_id == ^workout.id,
+      order_by: [asc: s.inserted_at],
+      select: s
+    )
+    |> Repo.all()
   end
 
   @doc """

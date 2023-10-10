@@ -1,4 +1,5 @@
 defmodule GymLiveWeb.WorkoutComponent do
+  alias GymLive.Training
   use GymLiveWeb, :live_component
 
   def render(assigns) do
@@ -69,7 +70,8 @@ defmodule GymLiveWeb.WorkoutComponent do
   end
 
   def update(%{workout: workout}, socket) do
-    set_forms = Enum.map(workout.sets, &build_set_form(&1, %{}))
+    sets = Training.list_sets_for_workout(workout)
+    set_forms = Enum.map(sets, &build_set_form(&1, %{}))
 
     socket =
       socket
