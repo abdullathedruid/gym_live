@@ -1,6 +1,5 @@
 defmodule GymLiveWeb.WorkoutComponent do
   use GymLiveWeb, :live_component
-  alias GymLive.Utils.Time
 
   def render(assigns) do
     ~H"""
@@ -10,7 +9,6 @@ defmodule GymLiveWeb.WorkoutComponent do
           <div>Exercise</div>
           <div>Weight (kg)</div>
           <div>Reps</div>
-          <div>Time</div>
         </div>
         <div id={"#{@workout.id}-items"} class="grid grid-cols-1 gap-2" phx-update="stream">
           <div :for={{id, form} <- @streams.items} id={id} class="">
@@ -24,7 +22,6 @@ defmodule GymLiveWeb.WorkoutComponent do
                 <.input field={form[:exercise]} type="select" options={@valid_exercises} />
                 <.input field={form[:weight]} phx-debounce="blur" />
                 <.input field={form[:reps]} phx-debounce="blur" />
-                <div class="flex items-center text-zinc-400"><%= format(form, @workout) %></div>
                 <div class="flex items-center justify-center">
                   <button
                     type="button"
@@ -47,17 +44,6 @@ defmodule GymLiveWeb.WorkoutComponent do
       </div>
     </div>
     """
-  end
-
-  def format(set, workout) do
-    workout_inserted = workout.inserted_at
-    exercise_inserted = set.data.inserted_at
-
-    if workout_inserted && exercise_inserted do
-      Timex.diff(exercise_inserted, workout_inserted, :seconds) |> Time.format_time()
-    else
-      ""
-    end
   end
 
   def handle_event("new_set", %{"workout_id" => workout_id}, socket) do
