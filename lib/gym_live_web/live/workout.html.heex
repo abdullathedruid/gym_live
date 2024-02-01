@@ -32,9 +32,9 @@
         <span :if={workouts}>
           <ul>
             <%= for workout <- workouts do %>
-              <li><%= workout.title %>
+              <li><.link patch={~p"/workouts?id=#{workout.id}"}><%= workout.title %>
 
-                <%= workout.inserted_at %></li>
+                  <%= workout.inserted_at %></.link></li>
             <% end %>
           </ul>
         </span>
