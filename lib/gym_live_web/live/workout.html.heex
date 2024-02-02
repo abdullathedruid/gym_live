@@ -34,7 +34,7 @@
             <%= for workout <- workouts do %>
               <li>
                 <.link patch={~p"/workouts?id=#{workout.id}"}>
-                  <%= workout.title %> <%= workout.inserted_at %>
+                  <%= workout.title %> <%= Calendar.strftime(workout.inserted_at, "%d %b, %Y") %>
                 </.link>
               </li>
             <% end %>
