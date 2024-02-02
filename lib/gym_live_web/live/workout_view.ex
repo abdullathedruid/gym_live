@@ -7,8 +7,12 @@ defmodule GymLiveWeb.GymLive.WorkoutView do
     sets = GymLive.Training.list_sets_for_workout(workout)
 
     socket =
-      assign(socket, :workout, workout)
-      |> assign(:sets, sets)
+      if workout.user_id == socket.assigns.current_user.id do
+        assign(socket, :workout, workout)
+        |> assign(:sets, sets)
+      else
+        redirect(socket, to: "/workout")
+      end
 
     {:ok, socket}
   end
