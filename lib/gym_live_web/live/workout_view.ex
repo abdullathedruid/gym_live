@@ -17,8 +17,13 @@ defmodule GymLiveWeb.GymLive.WorkoutView do
   def render(assigns) do
     ~H"""
     <div>
-      <.header><%= @workout.title %></.header>
-      <h2><%= @workout.inserted_at %></h2>
+      <.link patch={~p"/workout"} class="bg-blue-300 px-4 py-2 rounded-2xl">
+        &lt Back to workouts
+      </.link>
+      <div class="flex py-3">
+        <.header><%= @workout.title %></.header>
+        <p><%= @workout.inserted_at %></p>
+      </div>
       <ul>
         <%= for set <- @sets do %>
           <li>
