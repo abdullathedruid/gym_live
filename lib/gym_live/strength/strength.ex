@@ -1,15 +1,23 @@
 defmodule GymLive.Strength do
   @breakpoints [
     {125, "World class"},
-    {112.5, "Elite"},
+    {Decimal.new("112.5"), "Elite"},
     {100, "Exceptional"},
-    {87.5, "Exceptional"},
+    {Decimal.new("87.5"), "Exceptional"},
     {75, "Advanced"},
     {60, "Proficient"},
     {45, "Novice"},
     {30, "Untrained"},
     {0, "Subpar"}
   ]
+
+  def get_breakpoint(score) do
+    Enum.reduce_while(@breakpoints, "Literally unscoreable", fn {score_break, score_text}, _ ->
+      if Decimal.gt?(score, score_break),
+        do: {:halt, score_text},
+        else: {:cont, "Literally unscoreable"}
+    end)
+  end
 
   def one_rep_max(weight, 1), do: weight
 

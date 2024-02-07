@@ -1,10 +1,21 @@
 defmodule GymLiveWeb.WorkoutComponent do
+  alias GymLive.Strength
   alias GymLive.Training
   use GymLiveWeb, :live_component
+
+  @default_age 30
+  @default_body_weight Decimal.new(80)
 
   def render(assigns) do
     ~H"""
     <div class="bg-gray-100 py-4 rounded-lg">
+      <div :if={map_size(@symmetric_strength_scores) > 0} class="mx-auto px-6">
+        <h2>Symmetric Strength Scores:</h2>
+        <p>Body weight: <%= @body_weight %>kg. Age: <%= @age %></p>
+        <div :for={{lift, score} <- @symmetric_strength_scores} id={lift}>
+          <p><%= Strength.get_breakpoint(score) |> String.upcase() %> <%= lift %> <%= score %></p>
+        </div>
+      </div>
       <div class="mx-auto max-w-7xl px-4">
         <div class="flex flex-row space-x-4 justify-between">
           <div>Exercise</div>
@@ -76,6 +87,9 @@ defmodule GymLiveWeb.WorkoutComponent do
     socket =
       socket
       |> assign(workout: workout)
+      |> assign(body_weight: @default_body_weight)
+      |> assign(age: @default_age)
+      |> assign(symmetric_strength_scores: calculate_scores(sets))
       |> assign(
         valid_exercises: [
           "Squat",
@@ -94,6 +108,35 @@ defmodule GymLiveWeb.WorkoutComponent do
 
     {:ok, socket}
   end
+
+  defp calculate_scores(sets, existing_scores \\ %{}) do
+    Enum.reduce(sets, existing_scores, fn %GymLive.Training.Set{
+                                            reps: reps,
+                                            weight: weight,
+                                            exercise: exercise
+                                          },
+                                          acc ->
+      one_rep_max =
+        Strength.one_rep_max(weight, reps)
+        |> Strength.round_to()
+
+      if lift = get_exercise_atom(exercise) do
+        score =
+          Strength.strength_score(:male, @default_age, @default_body_weight, lift, one_rep_max)
+
+        Map.update(acc, lift, score, fn old -> Decimal.max(old, score) end)
+      else
+        acc
+      end
+    end)
+  end
+
+  # todo: we should use ecto.enum and standardise these
+  defp get_exercise_atom("Squat"), do: :squat
+  defp get_exercise_atom("Press"), do: :overhead_press
+  defp get_exercise_atom("Deadlift"), do: :deadlift
+  defp get_exercise_atom("Bench Press"), do: :bench_press
+  defp get_exercise_atom(_), do: nil
 
   defp build_set_form(item_or_changeset, params, action \\ nil) do
     changeset =
