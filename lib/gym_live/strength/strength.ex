@@ -1,21 +1,31 @@
 defmodule GymLive.Strength do
   @breakpoints [
-    {125, "World class"},
-    {Decimal.new("112.5"), "Elite"},
-    {100, "Exceptional"},
-    {Decimal.new("87.5"), "Exceptional"},
-    {75, "Advanced"},
-    {60, "Proficient"},
-    {45, "Novice"},
-    {30, "Untrained"},
-    {0, "Subpar"}
+    {125, "World class", "#f44336"},
+    {Decimal.new("112.5"), "Elite", "#ff5722"},
+    {100, "Exceptional", "#ffc107"},
+    {Decimal.new("87.5"), "Advanced", "#cddc39"},
+    {75, "Proficient", "#4caf50"},
+    {60, "Intermediate", "#009688"},
+    {45, "Novice", "#3f51b5"},
+    {30, "Untrained", "#673ab7"},
+    {0, "Subpar", "#e91e63"}
   ]
 
   def get_breakpoint(score) do
-    Enum.reduce_while(@breakpoints, "Literally unscoreable", fn {score_break, score_text}, _ ->
-      if Decimal.gt?(score, score_break),
-        do: {:halt, score_text},
-        else: {:cont, "Literally unscoreable"}
+    Enum.reduce_while(@breakpoints, "Literally unscoreable", fn
+      {score_break, score_text, _colour}, _ ->
+        if Decimal.gt?(score, score_break),
+          do: {:halt, score_text},
+          else: {:cont, "Literally unscoreable"}
+    end)
+  end
+
+  def get_colour(score) do
+    Enum.reduce_while(@breakpoints, "#000000", fn
+      {score_break, _text, score_colour}, _ ->
+        if Decimal.gt?(score, score_break),
+          do: {:halt, score_colour},
+          else: {:cont, "#000000"}
     end)
   end
 

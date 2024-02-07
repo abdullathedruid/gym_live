@@ -13,7 +13,9 @@ defmodule GymLiveWeb.WorkoutComponent do
         <h2>Symmetric Strength Scores:</h2>
         <p>Body weight: <%= @body_weight %>kg. Age: <%= @age %></p>
         <div :for={{lift, score} <- @symmetric_strength_scores} id={lift}>
-          <p><%= Strength.get_breakpoint(score) |> String.upcase() %> <%= lift %> <%= score %></p>
+          <p style={"color: #{Strength.get_colour(score)}"}>
+            <%= Strength.get_breakpoint(score) |> String.upcase() %> <%= lift %> <%= score %>
+          </p>
         </div>
       </div>
       <div class="mx-auto max-w-7xl px-4">
