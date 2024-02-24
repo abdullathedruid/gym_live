@@ -2,5 +2,5 @@
   <div class="mb-24">
     <%= @inner_content %>
   </div>
-  <.navigation_bar active_tab={@active_tab} />
+  <.navigation_bar :if={@active_tab} active_tab={@active_tab} />
 </div>
