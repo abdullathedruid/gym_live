@@ -1,11 +1,23 @@
 defmodule GymLiveWeb.EditWorkout do
   alias GymLive.Training
-  alias GymLive.Training.Set
+  alias GymLive.Training.{Set, Workout}
   use GymLiveWeb, :live_view
 
   def mount(_params, _session, socket) do
     workout =
       Training.get_active_workout_for_user(socket.assigns.current_user)
+      |> case do
+        nil ->
+          {:ok, workout} =
+            Training.create_workout(socket.assigns.current_user, %{
+              title: Workout.generate_workout_name()
+            })
+
+          workout
+
+        %Workout{} = workout ->
+          workout
+      end
 
     socket =
       assign(socket, :workout, workout)
