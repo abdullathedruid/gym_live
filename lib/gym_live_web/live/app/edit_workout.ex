@@ -20,7 +20,7 @@ defmodule GymLiveWeb.EditWorkout do
       <p class="text-3xl mx-4 mt-6"><%= @workout.title %></p>
       <p class="mx-2">Workout description</p>
       <br />
-      <div class="mx-6 relative overflow-x-auto shadow-md rounded-lg">
+      <div class="mx-6 relative shadow-md rounded-lg overflow-x-clip">
         <.sets_table workout={@workout} />
       </div>
       <.set_form form={@form} />
@@ -33,16 +33,22 @@ defmodule GymLiveWeb.EditWorkout do
     <table class="w-full text-sm text-left">
       <thead class="text-xs uppercase">
         <tr class="bg-gray-300">
-          <th scope="col" class="px-6 py-3">Exercise</th>
-          <th scope="col" class="px-6 py-3">Weight (kg)</th>
-          <th scope="col" class="px-6 py-3">Reps</th>
+          <th scope="col" class="px-4 py-3">Exercise</th>
+          <th scope="col" class="px-4 py-3">Weight</th>
+          <th scope="col" class="px-4 py-3">Reps</th>
+          <th scope="col" class="px-4 py-3">Action</th>
         </tr>
       </thead>
       <tbody id="sets">
         <tr :for={set <- @workout.sets} class="even:bg-gray-100 odd:bg-gray-50">
-          <td class="px-6 py-3"><%= set.exercise %></td>
-          <td class="px-6 py-3"><%= set.weight %></td>
-          <td class="px-6 py-3"><%= set.reps %></td>
+          <td class="px-4 py-3"><%= set.exercise %></td>
+          <td class="px-4 py-3"><%= set.weight %></td>
+          <td class="px-4 py-3"><%= set.reps %></td>
+          <td class="px-4 py-3 text-center">
+            <button phx-click="remove_set" phx-value-set-id={set.id}>
+              <.icon name="hero-x-mark" class="bg-red-500" />
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -103,6 +109,22 @@ defmodule GymLiveWeb.EditWorkout do
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}
+    end
+  end
+
+  def handle_event("remove_set", %{"set-id" => set_id}, socket) do
+    Training.get_set!(set_id)
+    |> Training.delete_set()
+    |> case do
+      {:ok, _set} ->
+        new_workout =
+          socket.assigns.workout
+          |> Map.update(:sets, [], fn old_sets -> Enum.reject(old_sets, &(&1.id == set_id)) end)
+
+        {:noreply, assign(socket, workout: new_workout)}
+
+      {:error, _changeset} ->
+        {:noreply, socket}
     end
   end
 end
