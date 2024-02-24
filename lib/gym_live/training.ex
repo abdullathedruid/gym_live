@@ -7,7 +7,7 @@ defmodule GymLive.Training do
   alias GymLiveWeb.GymLive.Workout
   alias GymLive.Repo
 
-  alias GymLive.Training.Workout
+  alias GymLive.Training.{Set, Workout}
   alias GymLive.Account.User
 
   @doc """
@@ -125,6 +125,7 @@ defmodule GymLive.Training do
       limit: 1,
       select: w
     )
+    |> preload(sets: ^from(s in Set, order_by: s.inserted_at))
     |> Repo.one()
   end
 

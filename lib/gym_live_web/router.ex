@@ -72,7 +72,7 @@ defmodule GymLiveWeb.Router do
       live "/workout", GymLive.Workout, :index
       live "/workouts", GymLive.WorkoutView
 
-      live "/edit_workout", GymLive.App.EditWorkout
+      live "/edit_workout", EditWorkout
     end
   end
 
