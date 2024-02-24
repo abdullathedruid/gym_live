@@ -52,27 +52,31 @@ defmodule GymLiveWeb.EditWorkout do
   def set_form(assigns) do
     ~H"""
     <div class="rounded-lg bg-gray-300 mt-2 py-2 px-3">
-      <p>Add new exercise:</p>
       <.simple_form for={@form} phx-change="validate" phx-submit="save">
-        <div class="flex flex-row gap-8">
-          <div class="flex flex-col items-center">
-            <p>Exercise</p>
-            <.input
-              field={@form[:exercise]}
-              type="select"
-              options={Training.Exercises.valid_exercises()}
-            />
+        <div>
+          <div class="flex flex-row gap-8">
+            <div class="flex flex-col items-center">
+              <p class="whitespace-nowrap">Exercise</p>
+              <.input
+                field={@form[:exercise]}
+                type="select"
+                options={
+                  Training.Exercises.valid_exercises_map()
+                  |> Enum.map(fn {id, name} -> {name, id} end)
+                }
+              />
+            </div>
+            <div class="flex flex-col items-center">
+              <p class="whitespace-nowrap">Weight (kg)</p>
+              <.input field={@form[:weight]} type="number" />
+            </div>
+            <div class="flex flex-col items-center">
+              <p class="whitespace-nowrap">Reps</p>
+              <.input field={@form[:reps]} type="number" />
+            </div>
           </div>
-          <div class="flex flex-col items-center">
-            <p>Weight (kg)</p>
-            <.input field={@form[:weight]} type="number" />
-          </div>
-          <div class="flex flex-col items-center">
-            <p>Reps</p>
-            <.input field={@form[:reps]} type="number" />
-          </div>
+          <button class="mt-3 mx-auto block bg-green-400 rounded-lg px-4 py-2">Add set</button>
         </div>
-        <button class="mx-auto block bg-green-400 rounded-lg px-4 py-2">Add exercise</button>
       </.simple_form>
     </div>
     """
