@@ -17,11 +17,19 @@ defmodule GymLiveWeb.EditWorkout do
   def render(assigns) do
     ~H"""
     <div :if={@workout}>
-      <p class="text-3xl mx-4 mt-6"><%= @workout.title %></p>
-      <p class="mx-2">Workout description</p>
-      <br />
+      <div class="mx-2 my-2 flex flex-row justify-around">
+        <div>
+          <p class="text-3xl"><%= @workout.title %></p>
+          <p class="">Workout description</p>
+        </div>
+        <div class="flex flex-col justify-center">
+          <button class="bg-green-400 rounded-xl px-1 py-1" phx-click="save_workout">
+            Finish Workout
+          </button>
+        </div>
+      </div>
       <div class="mx-6 relative shadow-md rounded-lg overflow-x-clip">
-        <.sets_table workout={@workout} />
+        <.sets_table :if={length(@workout.sets) > 0} workout={@workout} />
       </div>
       <.set_form form={@form} />
     </div>
@@ -58,10 +66,10 @@ defmodule GymLiveWeb.EditWorkout do
   def set_form(assigns) do
     ~H"""
     <div class="rounded-lg bg-gray-300 mt-2 py-2 px-3">
-      <.simple_form for={@form} phx-change="validate" phx-submit="save">
+      <.simple_form for={@form} phx-change="validate" phx-submit="save_set">
         <div>
-          <div class="flex flex-row gap-8">
-            <div class="flex flex-col items-center">
+          <div class="flex flex-row gap-8 justify-around">
+            <div class="flex flex-col items-center ">
               <p class="whitespace-nowrap">Exercise</p>
               <.input
                 field={@form[:exercise]}
@@ -81,7 +89,9 @@ defmodule GymLiveWeb.EditWorkout do
               <.input field={@form[:reps]} type="number" />
             </div>
           </div>
-          <button class="mt-3 mx-auto block bg-green-400 rounded-lg px-4 py-2">Add set</button>
+          <button class="mt-3 mx-auto block bg-green-400 rounded-lg px-4 py-2" phx-throttle="1000">
+            Add set
+          </button>
         </div>
       </.simple_form>
     </div>
@@ -98,7 +108,7 @@ defmodule GymLiveWeb.EditWorkout do
     {:noreply, assign(socket, form: form)}
   end
 
-  def handle_event("save", %{"set" => params}, socket) do
+  def handle_event("save_set", %{"set" => params}, socket) do
     case Training.create_set(socket.assigns.workout.id, params) do
       {:ok, set} ->
         new_workout =
@@ -126,5 +136,13 @@ defmodule GymLiveWeb.EditWorkout do
       {:error, _changeset} ->
         {:noreply, socket}
     end
+  end
+
+  def handle_event("save_workout", _unsigned_params, socket) do
+    Training.update_workout(socket.assigns.workout, %{status: :completed})
+
+    {:noreply,
+     socket
+     |> push_navigate(to: ~p"/workouts?id=#{socket.assigns.workout.id}")}
   end
 end
