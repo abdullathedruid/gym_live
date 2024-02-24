@@ -1,5 +1,5 @@
 defmodule GymLiveWeb.Nav do
-  alias GymLiveWeb.EditWorkout
+  alias GymLiveWeb.{EditWorkout, ViewWorkouts}
   import Phoenix.LiveView
   use Phoenix.Component
 
@@ -12,8 +12,14 @@ defmodule GymLiveWeb.Nav do
   defp handle_active_tab_params(_params, _url, socket) do
     active_tab =
       case {socket.view, socket.assigns.live_action} do
-        {EditWorkout, _} -> :edit_workout
-        _ -> nil
+        {EditWorkout, _} ->
+          :edit_workout
+
+        {ViewWorkouts, _} ->
+          :view_workouts
+
+        _ ->
+          nil
       end
 
     {:cont, assign(socket, active_tab: active_tab)}
