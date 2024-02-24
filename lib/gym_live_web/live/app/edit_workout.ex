@@ -1,9 +1,12 @@
 defmodule GymLiveWeb.EditWorkout do
   alias GymLive.Training
   alias GymLive.Training.{Set, Workout}
+  alias GymLive.Utils.Time
   use GymLiveWeb, :live_view
 
   def mount(_params, _session, socket) do
+    if connected?(socket), do: :timer.send_interval(1000, self(), :tick)
+
     workout =
       Training.get_active_workout_for_user(socket.assigns.current_user)
       |> case do
@@ -21,6 +24,7 @@ defmodule GymLiveWeb.EditWorkout do
 
     socket =
       assign(socket, :workout, workout)
+      |> assign(:seconds, workout_duration(workout))
       |> assign(form: to_form(Training.change_set(%Set{})))
 
     {:ok, socket}
@@ -32,7 +36,7 @@ defmodule GymLiveWeb.EditWorkout do
       <div class="mx-2 my-2 flex flex-row justify-around">
         <div>
           <p class="text-3xl"><%= @workout.title %></p>
-          <p class="">Workout description</p>
+          <p class=""><%= Time.format_time(@seconds) %></p>
         </div>
         <div class="flex flex-col justify-center">
           <button class="bg-green-400 rounded-xl px-1 py-1" phx-click="save_workout">
@@ -156,5 +160,17 @@ defmodule GymLiveWeb.EditWorkout do
     {:noreply,
      socket
      |> push_navigate(to: ~p"/workouts?id=#{socket.assigns.workout.id}")}
+  end
+
+  def handle_info(:tick, socket) do
+    {:noreply, assign(socket, :seconds, socket.assigns.seconds + 1)}
+  end
+
+  defp workout_duration(nil), do: 0
+
+  defp workout_duration(workout) do
+    Timex.now("UTC")
+    |> Timex.to_naive_datetime()
+    |> Timex.diff(workout.inserted_at, :seconds)
   end
 end
