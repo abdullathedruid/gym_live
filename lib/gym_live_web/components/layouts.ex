@@ -6,9 +6,11 @@ defmodule GymLiveWeb.Layouts do
   def navigation_bar(assigns) do
     ~H"""
     <div class="fixed left-2 bottom-2 right-2 p-5 px-6 m-2 flex items-center justify-around bg-gray-800 shadow-3xl text-gray-400 rounded-2xl">
-      <.nav_icon name="hero-pencil-square" highlighted={@active_tab == :edit_workout} />
+      <.link patch={~p"/edit_workout"}>
+        <.nav_icon name="hero-pencil-square" highlighted={@active_tab == :edit_workout} />
+      </.link>
+      <.nav_icon name="hero-document-chart-bar" />
       <.nav_icon name="hero-chart-bar" />
-      <.nav_icon name="hero-calculator" />
       <.nav_icon name="hero-user" />
     </div>
     """
