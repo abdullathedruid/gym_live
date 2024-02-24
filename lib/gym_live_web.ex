@@ -52,7 +52,7 @@ defmodule GymLiveWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {GymLiveWeb.Layouts, :app}
+        layout: {GymLiveWeb.Layouts, :live}
 
       unquote(html_helpers())
     end
