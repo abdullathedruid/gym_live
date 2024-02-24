@@ -14,4 +14,6 @@ defmodule GymLive.Training.Exercises do
   def valid_exercises_map, do: @valid_execises
 
   def valid_exercises, do: Keyword.values(@valid_execises)
+
+  def get_exercise_name(atom) when is_atom(atom), do: Keyword.get(@valid_execises, atom)
 end

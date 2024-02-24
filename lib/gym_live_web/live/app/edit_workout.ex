@@ -1,4 +1,5 @@
 defmodule GymLiveWeb.EditWorkout do
+  alias GymLive.Training.Exercises
   alias GymLive.Training
   alias GymLive.Training.{Set, Workout}
   alias GymLive.Utils.Time
@@ -65,7 +66,7 @@ defmodule GymLiveWeb.EditWorkout do
       </thead>
       <tbody id="sets">
         <tr :for={set <- @workout.sets} class="even:bg-gray-100 odd:bg-gray-50">
-          <td class="px-4 py-3"><%= set.exercise %></td>
+          <td class="px-4 py-3"><%= Exercises.get_exercise_name(set.exercise) %></td>
           <td class="px-4 py-3"><%= set.weight %></td>
           <td class="px-4 py-3"><%= set.reps %></td>
           <td class="px-4 py-3 text-center">
