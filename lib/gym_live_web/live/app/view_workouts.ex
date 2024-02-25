@@ -3,6 +3,7 @@ defmodule GymLiveWeb.ViewWorkouts do
   use GymLiveWeb, :live_view
 
   def mount(_params, _session, socket) do
+    # todo/optimization: add pagination/infinite scroll
     workouts = Training.list_completed_workouts_for_user(socket.assigns.current_user)
 
     {:ok,
@@ -13,28 +14,24 @@ defmodule GymLiveWeb.ViewWorkouts do
   def render(assigns) do
     ~H"""
     <div :if={match?([_ | _], @workouts)} class="flex flex-col h-screen">
-      <div class="flex-grow overflow-auto">
-        <table class="relative w-full border">
+      <div class="flex-grow min-h-screen">
+        <div class="relative w-full border rounded-lg">
           <%= for {month, workouts} <- Enum.group_by(@workouts, &Timex.beginning_of_month(&1.inserted_at)) |> Enum.sort(&Timex.diff(elem(&1, 0), elem(&2, 0))>0) do %>
-            <thead>
-              <tr>
-                <th class="sticky top-0 text-gray-900 bg-gray-300" colspan="2">
-                  <%= Timex.format!(month, "{Mfull} {YYYY}") %>
-                </th>
-              </tr>
-            </thead>
-            <tbody class="divide-y">
+            <div class="sticky top-0 text-gray-900 bg-gray-300 px-6 py-3">
+              <%= Timex.format!(month, "{Mfull} {YYYY}") %>
+            </div>
+            <div class="divide-y">
               <%= for workout <- workouts do %>
-                <tr>
-                  <td class="py-12">
+                <div class="flex flex-row place-content-between">
+                  <p class="py-3 px-4">
                     <%= Timex.format!(workout.inserted_at, "{WDfull} {D} {h24}:{m}") %>
-                  </td>
-                  <td class="py-12"><%= workout.title %></td>
-                </tr>
+                  </p>
+                  <p class="py-3 px-4"><%= workout.title %></p>
+                </div>
               <% end %>
-            </tbody>
+            </div>
           <% end %>
-        </table>
+        </div>
       </div>
     </div>
     <div :if={@workouts == []} class="mx-3 my-3">
