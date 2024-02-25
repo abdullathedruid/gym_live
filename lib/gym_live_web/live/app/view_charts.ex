@@ -25,7 +25,7 @@ defmodule GymLiveWeb.ViewCharts do
     ~H"""
     <div class="mx-4 my-4">
       <p>Squat - estimated one rep max</p>
-      <.line_chart id="squat-chart-1" dataset={@dataset} categories={@categories} toolbar={true} />
+      <.line_chart id="squat-chart-1" dataset={@dataset} categories={@categories} />
     </div>
     """
   end
