@@ -72,6 +72,8 @@ defmodule GymLiveWeb.Router do
       live "/workout/:id", ViewWorkout
       live "/workouts", ViewWorkouts
       live "/edit_workout", EditWorkout
+
+      live "/charts", ViewCharts
     end
   end
 

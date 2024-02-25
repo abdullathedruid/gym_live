@@ -1,5 +1,5 @@
 defmodule GymLiveWeb.Nav do
-  alias GymLiveWeb.{EditWorkout, ViewWorkout, ViewWorkouts}
+  alias GymLiveWeb.{EditWorkout, ViewCharts, ViewWorkout, ViewWorkouts}
   import Phoenix.LiveView
   use Phoenix.Component
 
@@ -20,6 +20,9 @@ defmodule GymLiveWeb.Nav do
 
         {ViewWorkout, _} ->
           :view_workout
+
+        {ViewCharts, _} ->
+          :view_charts
 
         _ ->
           nil
