@@ -22,24 +22,17 @@ defmodule GymLiveWeb.EditWorkout do
           workout
       end
 
-    defaults =
-      case workout.sets do
-        [] -> %{}
-        sets -> Enum.reverse(sets) |> hd() |> Map.take([:exercise, :weight, :reps])
-      end
-
     socket =
       assign(socket, :workout, workout)
       |> assign(:seconds, workout_duration(workout))
       |> assign(form: to_form(Training.change_set(%Set{})))
-      |> assign(defaults: defaults)
 
     {:ok, socket}
   end
 
   def render(assigns) do
     ~H"""
-    <div class="h-full">
+    <div :if={@workout} class="h-full">
       <.modal id="cancel-modal">
         <p>
           Are you sure you want to abandon your workout? Your workout data will be lost.
@@ -73,7 +66,7 @@ defmodule GymLiveWeb.EditWorkout do
       <div class="mx-6 relative shadow-md rounded-lg overflow-x-clip">
         <.sets_table :if={length(@workout.sets) > 0} workout={@workout} />
       </div>
-      <.set_form form={@form} defaults={@defaults} />
+      <.set_form form={@form} />
       <div class="mt-16 flex-row flex justify-around">
         <button phx-click={show_modal("cancel-modal")} class="bg-red-400 px-2 py-2 rounded-2xl">
           Abandon workout
@@ -121,7 +114,6 @@ defmodule GymLiveWeb.EditWorkout do
               <.input
                 field={@form[:exercise]}
                 type="select"
-                value={Map.get(@defaults, :exercise)}
                 options={
                   Training.Exercises.valid_exercises_map()
                   |> Enum.map(fn {id, name} -> {name, id} end)
@@ -130,11 +122,11 @@ defmodule GymLiveWeb.EditWorkout do
             </div>
             <div class="flex flex-col items-center">
               <p class="whitespace-nowrap">Weight (kg)</p>
-              <.input field={@form[:weight]} type="number" value={Map.get(@defaults, :weight)} />
+              <.input field={@form[:weight]} type="number" />
             </div>
             <div class="flex flex-col items-center">
               <p class="whitespace-nowrap">Reps</p>
-              <.input field={@form[:reps]} type="number" value={Map.get(@defaults, :reps)} />
+              <.input field={@form[:reps]} type="number" />
             </div>
           </div>
           <button class="mt-3 mx-auto block bg-green-400 rounded-lg px-4 py-2" phx-throttle="1000">
@@ -163,9 +155,7 @@ defmodule GymLiveWeb.EditWorkout do
           socket.assigns.workout
           |> Map.update(:sets, [set], fn old_sets -> old_sets ++ [set] end)
 
-        {:noreply,
-         assign(socket, workout: new_workout)
-         |> assign(defaults: Map.take(set, [:exercise, :weight, :reps]))}
+        {:noreply, assign(socket, workout: new_workout)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}
