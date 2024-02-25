@@ -19,6 +19,13 @@ Hooks.Chart = {
                         hour: 'HH:mm'
                     }
                 }
+            },
+            markers: {
+                size: [6, 0]
+            },
+            tooltip: {
+                shared: false,
+                intersect: true
             }
         }
 
