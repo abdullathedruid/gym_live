@@ -31,12 +31,11 @@ defmodule GymLive.Training do
     |> Repo.all()
   end
 
-  def list_all_sets_by_exercise_for_user(%User{} = user, exercise) do
+  def list_all_sets_for_user(%User{} = user) do
     from(s in Set,
       join: w in Workout,
       on: s.workout_id == w.id,
       where: w.user_id == ^user.id and w.status == :completed,
-      where: s.exercise == ^exercise,
       order_by: [s.inserted_at]
     )
     |> Repo.all()

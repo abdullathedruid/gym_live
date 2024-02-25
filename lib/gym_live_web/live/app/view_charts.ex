@@ -2,75 +2,48 @@ defmodule GymLiveWeb.ViewCharts do
   use GymLiveWeb, :live_app
   import GymLiveWeb.Charts
   alias GymLive.{Strength, Training}
-  alias GymLive.Training.Set
+  alias GymLive.Training.{Exercises, Set}
 
   def mount(_, _session, socket) do
     initial_data =
-      Training.list_all_sets_by_exercise_for_user(socket.assigns.current_user, :squat)
+      Training.list_all_sets_for_user(socket.assigns.current_user)
 
-    {data, categories} =
-      Enum.group_by(initial_data, &Timex.beginning_of_day(&1.inserted_at))
-      |> Enum.flat_map(fn {_day, sets} ->
-        Enum.max_by(sets, &Strength.one_rep_max(&1.weight, &1.reps))
-        |> case do
-          %Set{weight: weight, reps: reps, inserted_at: time} ->
-            [
-              {Strength.one_rep_max(weight, reps)
-               |> Strength.round_to()
-               |> Decimal.to_string(), DateTime.to_unix(time) * 1000}
-            ]
+    data_map =
+      for {exercise, sets} when exercise in [:squat, :press, :bench_press, :deadlift] <-
+            initial_data
+            |> Enum.group_by(& &1.exercise) do
+        Enum.group_by(sets, &Timex.beginning_of_day(&1.inserted_at))
+        |> Enum.flat_map(fn {_day, sets} ->
+          Enum.max_by(sets, &Strength.one_rep_max(&1.weight, &1.reps))
+          |> case do
+            %Set{weight: weight, reps: reps, inserted_at: time} ->
+              [
+                {Strength.one_rep_max(weight, reps)
+                 |> Strength.round_to()
+                 |> Decimal.to_string(), DateTime.to_unix(time) * 1000}
+              ]
 
-          nil ->
-            []
-        end
-      end)
-      |> Enum.unzip()
-
-    {data_ss, categories_ss} =
-      Enum.group_by(initial_data, &Timex.beginning_of_day(&1.inserted_at))
-      |> Enum.flat_map(fn {_day, sets} ->
-        Enum.max_by(sets, fn set ->
-          one_rep_max =
-            Strength.one_rep_max(set.weight, set.reps)
-            |> Strength.round_to()
-
-          Strength.strength_score(:male, 30, 80, :squat, one_rep_max)
+            nil ->
+              []
+          end
         end)
-        |> case do
-          %Set{weight: weight, reps: reps, inserted_at: time} ->
-            one_rep_max =
-              Strength.one_rep_max(weight, reps)
-              |> Strength.round_to()
-
-            [
-              {Strength.strength_score(:male, 30, 80, :squat, one_rep_max)
-               |> Strength.round_to()
-               |> Decimal.to_string(), DateTime.to_unix(time) * 1000}
-            ]
-
-          nil ->
-            []
-        end
+        |> Enum.unzip()
+        |> then(&{exercise, &1})
+      end
+      |> Enum.map(fn {exercise, {maxes, timestamps}} ->
+        {exercise,
+         {[
+            %{name: Exercises.get_exercise_name(exercise), data: maxes, type: "scatter"},
+            %{name: "Trend", data: make_trendline(maxes, timestamps), type: "line"}
+          ], timestamps}}
       end)
-      |> Enum.unzip()
 
     {:ok,
      socket
-     |> assign(
-       dataset: [
-         %{name: "Squat (1RM)", data: data, type: "scatter"},
-         %{name: "Trend", data: make_trendline(data, categories), type: "line"}
-       ],
-       dataset_ss: [
-         %{name: "Strength score", data: data_ss, type: "scatter"},
-         %{name: "Trend", data: make_trendline(data_ss, categories_ss), type: "line"}
-       ]
-     )
-     |> assign(categories: categories)
-     |> assign(categories_ss: categories_ss)}
+     |> assign(data: data_map)}
   end
 
-  defp make_trendline(data, categories) do
+  defp make_trendline(data, categories) when length(categories) > 1 do
     x_m = (Enum.sum(categories) / length(categories)) |> trunc()
     y_m = Enum.reduce(data, 0, fn x, acc -> Decimal.add(x, acc) end) |> Decimal.div(length(data))
 
@@ -94,16 +67,25 @@ defmodule GymLiveWeb.ViewCharts do
         do: Decimal.mult(m, x) |> Decimal.add(c) |> Decimal.round(1) |> Decimal.to_string()
   end
 
+  defp make_trendline(_, _), do: []
+
   def render(assigns) do
     ~H"""
     <div class="mx-4 my-4">
-      <p>Squat - estimated one rep max</p>
-      <.line_chart id="squat-chart-1" dataset={@dataset} categories={@categories} />
-      <p>Squat - symmetric strength score</p>
-      <.line_chart id="squat-chart-2" dataset={@dataset_ss} categories={@categories_ss} />
+      <div :for={exercise <- [:squat, :deadlift, :press, :bench_press]}>
+        <p><%= Exercises.get_exercise_name(exercise) %> - estimated one rep max</p>
+        <.line_chart
+          id="squat-chart-1"
+          dataset={get_dataset(@data, exercise)}
+          categories={get_categories(@data, exercise)}
+        />
+      </div>
     </div>
     """
   end
+
+  defp get_dataset(data, exercise), do: Keyword.get(data, exercise, {[], []}) |> elem(0)
+  defp get_categories(data, exercise), do: Keyword.get(data, exercise, {[], []}) |> elem(1)
 
   def handle_params(_unsigned_params, _uri, socket) do
     {:noreply, socket}
