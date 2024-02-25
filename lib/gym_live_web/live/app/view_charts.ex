@@ -5,11 +5,11 @@ defmodule GymLiveWeb.ViewCharts do
   alias GymLive.Training.Set
 
   def mount(_, _session, socket) do
-    data =
+    initial_data =
       Training.list_all_sets_by_exercise_for_user(socket.assigns.current_user, :squat)
 
     {data, categories} =
-      Enum.group_by(data, &Timex.beginning_of_day(&1.inserted_at))
+      Enum.group_by(initial_data, &Timex.beginning_of_day(&1.inserted_at))
       |> Enum.flat_map(fn {_day, sets} ->
         Enum.max_by(sets, &Strength.one_rep_max(&1.weight, &1.reps))
         |> case do
@@ -26,15 +26,48 @@ defmodule GymLiveWeb.ViewCharts do
       end)
       |> Enum.unzip()
 
+    {data_ss, categories_ss} =
+      Enum.group_by(initial_data, &Timex.beginning_of_day(&1.inserted_at))
+      |> Enum.flat_map(fn {_day, sets} ->
+        Enum.max_by(sets, fn set ->
+          one_rep_max =
+            Strength.one_rep_max(set.weight, set.reps)
+            |> Strength.round_to()
+
+          Strength.strength_score(:male, 30, 80, :squat, one_rep_max)
+        end)
+        |> case do
+          %Set{weight: weight, reps: reps, inserted_at: time} ->
+            one_rep_max =
+              Strength.one_rep_max(weight, reps)
+              |> Strength.round_to()
+
+            [
+              {Strength.strength_score(:male, 30, 80, :squat, one_rep_max)
+               |> Strength.round_to()
+               |> Decimal.to_string(), DateTime.to_unix(time) * 1000}
+            ]
+
+          nil ->
+            []
+        end
+      end)
+      |> Enum.unzip()
+
     {:ok,
      socket
      |> assign(
        dataset: [
          %{name: "Squat (1RM)", data: data, type: "scatter"},
          %{name: "Trend", data: make_trendline(data, categories), type: "line"}
+       ],
+       dataset_ss: [
+         %{name: "Strength score", data: data_ss, type: "scatter"},
+         %{name: "Trend", data: make_trendline(data_ss, categories_ss), type: "line"}
        ]
      )
-     |> assign(categories: categories)}
+     |> assign(categories: categories)
+     |> assign(categories_ss: categories_ss)}
   end
 
   defp make_trendline(data, categories) do
@@ -66,6 +99,8 @@ defmodule GymLiveWeb.ViewCharts do
     <div class="mx-4 my-4">
       <p>Squat - estimated one rep max</p>
       <.line_chart id="squat-chart-1" dataset={@dataset} categories={@categories} />
+      <p>Squat - symmetric strength score</p>
+      <.line_chart id="squat-chart-2" dataset={@dataset_ss} categories={@categories_ss} />
     </div>
     """
   end
