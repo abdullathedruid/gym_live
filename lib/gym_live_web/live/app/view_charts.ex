@@ -33,7 +33,11 @@ defmodule GymLiveWeb.ViewCharts do
       |> Enum.map(fn {exercise, {maxes, timestamps}} ->
         {exercise,
          {[
-            %{name: Exercises.get_exercise_name(exercise), data: maxes, type: "scatter"},
+            %{
+              name: Exercises.get_exercise_name(exercise) <> " (1RM)",
+              data: maxes,
+              type: "scatter"
+            },
             %{name: "Trend", data: make_trendline(maxes, timestamps), type: "line"}
           ], timestamps}}
       end)
