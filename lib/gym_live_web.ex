@@ -51,7 +51,7 @@ defmodule GymLiveWeb do
 
   def live_view do
     quote do
-      use Phoenix.LiveView
+      use Phoenix.LiveView, layout: {GymLiveWeb.Layouts, :app}
 
       unquote(html_helpers())
     end
@@ -65,7 +65,6 @@ defmodule GymLiveWeb do
       unquote(html_helpers())
     end
   end
-
 
   def live_component do
     quote do
