@@ -40,4 +40,8 @@ defmodule GymLiveWeb.ViewWorkouts do
     </div>
     """
   end
+
+  def handle_params(_unsigned_params, _uri, socket) do
+    {:noreply, socket}
+  end
 end

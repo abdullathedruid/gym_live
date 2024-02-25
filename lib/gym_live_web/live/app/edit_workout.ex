@@ -167,6 +167,10 @@ defmodule GymLiveWeb.EditWorkout do
     {:noreply, assign(socket, :seconds, socket.assigns.seconds + 1)}
   end
 
+  def handle_params(_unsigned_params, _uri, socket) do
+    {:noreply, socket}
+  end
+
   defp workout_duration(nil), do: 0
 
   defp workout_duration(workout) do
