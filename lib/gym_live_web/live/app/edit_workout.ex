@@ -32,7 +32,7 @@ defmodule GymLiveWeb.EditWorkout do
 
   def render(assigns) do
     ~H"""
-    <div :if={@workout}>
+    <div :if={@workout} class="h-full">
       <div class="mx-2 my-2 flex flex-row justify-around">
         <div>
           <p class="text-3xl"><%= @workout.title %></p>
@@ -48,6 +48,11 @@ defmodule GymLiveWeb.EditWorkout do
         <.sets_table :if={length(@workout.sets) > 0} workout={@workout} />
       </div>
       <.set_form form={@form} />
+      <div class="mt-16 flex-row flex justify-around">
+        <button phx-click="abandon_workout" class="bg-red-400 px-2 py-2 rounded-2xl">
+          Abandon workout
+        </button>
+      </div>
     </div>
     """
   end
@@ -160,6 +165,14 @@ defmodule GymLiveWeb.EditWorkout do
     {:noreply,
      socket
      |> push_navigate(to: ~p"/workouts?id=#{socket.assigns.workout.id}")}
+  end
+
+  def handle_event("abandon_workout", _unsigned_params, socket) do
+    Training.delete_workout(socket.assigns.workout)
+
+    {:noreply,
+     socket
+     |> push_navigate(to: ~p"/workouts")}
   end
 
   def handle_info(:tick, socket) do
