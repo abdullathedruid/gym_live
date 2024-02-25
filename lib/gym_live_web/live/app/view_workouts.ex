@@ -22,7 +22,11 @@ defmodule GymLiveWeb.ViewWorkouts do
             </div>
             <div class="divide-y">
               <%= for workout <- workouts do %>
-                <div class="flex flex-row place-content-between">
+                <div
+                  class="flex flex-row place-content-between cursor-pointer"
+                  phx-click="goto_workout"
+                  phx-value-workout-id={workout.id}
+                >
                   <p class="py-3 px-4">
                     <%= Timex.format!(workout.inserted_at, "{WDfull} {D} {h24}:{m}") %>
                   </p>
@@ -39,6 +43,10 @@ defmodule GymLiveWeb.ViewWorkouts do
       <.link patch={~p"/edit_workout"}>Get started</.link>
     </div>
     """
+  end
+
+  def handle_event("goto_workout", %{"workout-id" => workout_id}, socket) do
+    {:noreply, push_navigate(socket, to: ~p"/workout/#{workout_id}")}
   end
 
   def handle_params(_unsigned_params, _uri, socket) do

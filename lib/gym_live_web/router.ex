@@ -69,8 +69,7 @@ defmodule GymLiveWeb.Router do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
 
-      live "/workout", GymLive.Workout, :index
-
+      live "/workout/:id", ViewWorkout
       live "/workouts", ViewWorkouts
       live "/edit_workout", EditWorkout
     end
