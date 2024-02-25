@@ -1,9 +1,8 @@
 defmodule GymLiveWeb.EditWorkout do
-  alias GymLive.Training.Exercises
+  use GymLiveWeb, :live_app
   alias GymLive.Training
-  alias GymLive.Training.{Set, Workout}
+  alias GymLive.Training.{Exercises, Set, Workout}
   alias GymLive.Utils.Time
-  use GymLiveWeb, :live_view
 
   def mount(_params, _session, socket) do
     if connected?(socket), do: :timer.send_interval(1000, self(), :tick)

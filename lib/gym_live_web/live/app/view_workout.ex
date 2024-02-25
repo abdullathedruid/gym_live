@@ -1,5 +1,5 @@
 defmodule GymLiveWeb.ViewWorkout do
-  use GymLiveWeb, :live_view
+  use GymLiveWeb, :live_app
   alias GymLive.Strength
   alias GymLive.Training.{Exercises, Set}
 

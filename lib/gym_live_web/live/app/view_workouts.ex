@@ -1,6 +1,6 @@
 defmodule GymLiveWeb.ViewWorkouts do
+  use GymLiveWeb, :live_app
   alias GymLive.Training
-  use GymLiveWeb, :live_view
 
   def mount(_params, _session, socket) do
     # todo/optimization: add pagination/infinite scroll
