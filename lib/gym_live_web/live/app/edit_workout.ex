@@ -33,6 +33,25 @@ defmodule GymLiveWeb.EditWorkout do
   def render(assigns) do
     ~H"""
     <div :if={@workout} class="h-full">
+      <.modal id="cancel-modal">
+        <p>
+          Are you sure you want to abandon your workout? Your workout data will be lost.
+        </p>
+        <div class="sm:flex sm:flex-row-reverse bg-gray-50 px-4 py-3 sm:px-6">
+          <button
+            phx-click="abandon_workout"
+            class="infline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+          >
+            Abandon workout
+          </button>
+          <button
+            phx-click={hide_modal("cancel-modal")}
+            class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+          >
+            Cancel
+          </button>
+        </div>
+      </.modal>
       <div class="mx-2 my-2 flex flex-row justify-around">
         <div>
           <p class="text-3xl"><%= @workout.title %></p>
@@ -49,7 +68,7 @@ defmodule GymLiveWeb.EditWorkout do
       </div>
       <.set_form form={@form} />
       <div class="mt-16 flex-row flex justify-around">
-        <button phx-click="abandon_workout" class="bg-red-400 px-2 py-2 rounded-2xl">
+        <button phx-click={show_modal("cancel-modal")} class="bg-red-400 px-2 py-2 rounded-2xl">
           Abandon workout
         </button>
       </div>
