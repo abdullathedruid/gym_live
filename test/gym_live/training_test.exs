@@ -101,13 +101,13 @@ defmodule GymLive.TrainingTest do
     end
 
     test "create_set/1 with valid data creates a set" do
-      valid_attrs = %{exercise: "some exercise", reps: 42, weight: 120.5}
+      valid_attrs = %{exercise: "Bench Press", reps: 42, weight: 120.5}
 
       user = user_fixture()
       workout = workout_fixture(user)
 
       assert {:ok, %Set{} = set} = Training.create_set(workout, valid_attrs)
-      assert set.exercise == "some exercise"
+      assert set.exercise == :bench_press
       assert set.reps == 42
       assert set.weight == 120.5
     end
@@ -122,10 +122,10 @@ defmodule GymLive.TrainingTest do
       user = user_fixture()
       workout = workout_fixture(user)
       set = set_fixture(workout)
-      update_attrs = %{exercise: "some updated exercise", reps: 43, weight: 456.7}
+      update_attrs = %{exercise: "Press", reps: 43, weight: 456.7}
 
       assert {:ok, %Set{} = set} = Training.update_set(set, update_attrs)
-      assert set.exercise == "some updated exercise"
+      assert set.exercise == :press
       assert set.reps == 43
       assert set.weight == 456.7
     end

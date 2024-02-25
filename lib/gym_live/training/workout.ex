@@ -20,4 +20,10 @@ defmodule GymLive.Training.Workout do
     |> cast(attrs, [:title, :status])
     |> validate_required([:title, :status])
   end
+
+  def generate_workout_name do
+    # todo: consider user locale
+    Timex.now()
+    |> Timex.format!("{WDshort} {AM} Workout")
+  end
 end

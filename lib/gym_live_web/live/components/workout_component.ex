@@ -92,20 +92,7 @@ defmodule GymLiveWeb.WorkoutComponent do
       |> assign(body_weight: @default_body_weight)
       |> assign(age: @default_age)
       |> assign(symmetric_strength_scores: calculate_scores(sets))
-      |> assign(
-        valid_exercises: [
-          "Squat",
-          "Press",
-          "Chins",
-          "Face Pulls",
-          "Dips",
-          "Deadlift",
-          "Bench Press",
-          "Rows",
-          "Curls",
-          "Shrugs"
-        ]
-      )
+      |> assign(valid_exercises: Training.Exercises.valid_exercises())
       |> stream(:items, set_forms)
 
     {:ok, socket}

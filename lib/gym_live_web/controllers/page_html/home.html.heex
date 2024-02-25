@@ -1,10 +1,16 @@
 <.flash_group flash={@flash} />
+<%!-- this page is only displayed when user is not logged in --%>
 <div class="px-4 py-10 sm:px-6 sm:py-28 lg:px-8 xl:px-28 xl:py-32">
   <div class="px-3 py-3">
     <h1 class="text-3xl">GymLive</h1>
     <h2 class="text-xl">An app to make you stronk.</h2>
   </div>
-  <div class="py-12">
-    <.link href={~p"/workout"}>Start workout</.link>
+  <div class="flex flex-row space-x-4 py-12">
+    <.link href={~p"/users/register"} class="bg-green-500 px-2 py-2 rounded-2xl w-fit flex">
+      Register
+    </.link>
+    <.link href={~p"/users/log_in"} class="bg-green-500 px-2 py-2 rounded-2xl w-fit flex">
+      Log in
+    </.link>
   </div>
 </div>

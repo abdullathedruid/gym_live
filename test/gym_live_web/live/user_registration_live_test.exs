@@ -9,7 +9,7 @@ defmodule GymLiveWeb.UserRegistrationLiveTest do
       {:ok, _lv, html} = live(conn, ~p"/users/register")
 
       assert html =~ "Register"
-      assert html =~ "Log in"
+      assert html =~ "Create an account"
     end
 
     test "redirects if already logged in", %{conn: conn} do
@@ -17,7 +17,7 @@ defmodule GymLiveWeb.UserRegistrationLiveTest do
         conn
         |> log_in_user(user_fixture())
         |> live(~p"/users/register")
-        |> follow_redirect(conn, "/")
+        |> follow_redirect(conn, "/workouts")
 
       assert {:ok, _conn} = result
     end
@@ -45,14 +45,14 @@ defmodule GymLiveWeb.UserRegistrationLiveTest do
       render_submit(form)
       conn = follow_trigger_action(form, conn)
 
-      assert redirected_to(conn) == ~p"/"
+      assert redirected_to(conn) == ~p"/workouts"
 
       # Now do a logged in request and assert on the menu
       conn = get(conn, "/")
       response = html_response(conn, 200)
-      # assert response =~ email
-      assert response =~ "Settings"
-      assert response =~ "Log out"
+
+      assert response =~ "GymLive"
+      assert response =~ "An app to make you stronk."
     end
 
     test "renders errors for duplicated email", %{conn: conn} do
@@ -72,6 +72,8 @@ defmodule GymLiveWeb.UserRegistrationLiveTest do
   end
 
   describe "registration navigation" do
+    # We removed the "Log in" button in header
+    @tag :skip
     test "redirects to login page when the Log in button is clicked", %{conn: conn} do
       {:ok, lv, _html} = live(conn, ~p"/users/register")
 

@@ -65,12 +65,13 @@ defmodule GymLiveWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :require_authenticated_user,
-      on_mount: [{GymLiveWeb.UserAuth, :ensure_authenticated}] do
+      on_mount: [{GymLiveWeb.UserAuth, :ensure_authenticated}, GymLiveWeb.Nav] do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
 
-      live "/workout", GymLive.Workout, :index
-      live "/workouts", GymLive.WorkoutView
+      live "/workout/:id", ViewWorkout
+      live "/workouts", ViewWorkouts
+      live "/edit_workout", EditWorkout
     end
   end
 

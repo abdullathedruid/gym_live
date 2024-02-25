@@ -152,7 +152,7 @@ defmodule GymLive.Strength do
   defp percent_of_pl_total(:male, age, :bench_press, one_rep_max),
     do: Decimal.mult("0.65", percent_of_pl_total(:male, age, :deadlift, one_rep_max))
 
-  defp percent_of_pl_total(:male, age, :overhead_press, one_rep_max),
+  defp percent_of_pl_total(:male, age, :press, one_rep_max),
     do: Decimal.mult("0.65", percent_of_pl_total(:male, age, :bench_press, one_rep_max))
 
   # defp percent_of_pl_total(:male, age, :chin_up, one_rep_max) do

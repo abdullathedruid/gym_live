@@ -30,7 +30,7 @@ defmodule GymLive.TrainingFixtures do
       |> GymLive.Training.create_set(
         attrs
         |> Enum.into(%{
-          exercise: "some exercise",
+          exercise: "squat",
           reps: 42,
           weight: 120.5
         })

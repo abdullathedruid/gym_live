@@ -6,7 +6,7 @@ defmodule GymLive.Training.Set do
   @foreign_key_type :binary_id
   @timestamps_opts [type: :utc_datetime]
   schema "sets" do
-    field :exercise, :string
+    field :exercise, Ecto.Enum, values: GymLive.Training.Exercises.valid_exercises_map()
     field :reps, :integer
     field :weight, :float
     belongs_to :workout, GymLive.Training.Workout, foreign_key: :workout_id
