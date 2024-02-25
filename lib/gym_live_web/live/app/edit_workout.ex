@@ -164,7 +164,7 @@ defmodule GymLiveWeb.EditWorkout do
 
     {:noreply,
      socket
-     |> push_navigate(to: ~p"/workouts?id=#{socket.assigns.workout.id}")}
+     |> push_navigate(to: ~p"/workout/#{socket.assigns.workout.id}")}
   end
 
   def handle_event("abandon_workout", _unsigned_params, socket) do
