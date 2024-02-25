@@ -9,10 +9,20 @@ defmodule GymLiveWeb.ViewCharts do
       Training.list_all_sets_by_exercise_for_user(socket.assigns.current_user, :squat)
 
     {data, categories} =
-      Enum.map(data, fn %Set{weight: weight, reps: reps, inserted_at: time} ->
-        {Strength.one_rep_max(weight, reps)
-         |> Strength.round_to()
-         |> Decimal.to_string(), DateTime.to_unix(time) * 1000}
+      Enum.group_by(data, &Timex.beginning_of_day(&1.inserted_at))
+      |> Enum.flat_map(fn {_day, sets} ->
+        Enum.max_by(sets, &Strength.one_rep_max(&1.weight, &1.reps))
+        |> case do
+          %Set{weight: weight, reps: reps, inserted_at: time} ->
+            [
+              {Strength.one_rep_max(weight, reps)
+               |> Strength.round_to()
+               |> Decimal.to_string(), DateTime.to_unix(time) * 1000}
+            ]
+
+          nil ->
+            []
+        end
       end)
       |> Enum.unzip()
 
