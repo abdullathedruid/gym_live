@@ -34,12 +34,12 @@ defmodule GymLiveWeb.ViewWorkout do
           </div>
           <div
             :for={{weight, sets_per_weight} <- Enum.group_by(sets, & &1.weight)}
-            class="flex flex-row justify-around"
+            class="flex flex-row gap-3 justify-center"
           >
             <div class="">
               <%= weight %>kg
             </div>
-            <div class="">
+            <div class="basis-1/2 text-center">
               <%= Enum.map(sets_per_weight, & &1.reps)
               |> Enum.map_join(", ", &to_string/1) %>
             </div>
