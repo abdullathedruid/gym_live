@@ -21,18 +21,32 @@ defmodule GymLiveWeb.ViewWorkout do
   def render(assigns) do
     ~H"""
     <div class="mx-auto px-3 py-3">
-      <.header><%= @workout.title %></.header>
-      <p><%= Timex.format!(@workout.inserted_at, "{Mfull} {YYYY} {h24}:{m}") %></p>
+      <.header class="text-center"><%= @workout.title %></.header>
+      <p class="text-center">
+        <%= Timex.format!(@workout.inserted_at, "{D} {Mfull} {YYYY} {h24}:{m}") %>
+      </p>
       <br />
-      <ul>
-        <%= for set <- @sets do %>
-          <li>
-            <%= Exercises.get_exercise_name(set.exercise) %> <%= set.reps %>x<%= set.weight %>kg
-          </li>
+      <div class="flex flex-col w-full">
+        <%= for {exercise, sets} <- Enum.group_by(@sets, & &1.exercise) do %>
+          <div class="uppercase text-center font-bold">
+            <%= Exercises.get_exercise_name(exercise) %>
+          </div>
+          <div
+            :for={{weight, sets_per_weight} <- Enum.group_by(sets, & &1.weight)}
+            class="flex flex-row justify-around"
+          >
+            <div class="">
+              <%= weight %>kg
+            </div>
+            <div class="">
+              <%= Enum.map(sets_per_weight, & &1.reps)
+              |> Enum.map_join(", ", &to_string/1) %>
+            </div>
+          </div>
         <% end %>
-      </ul>
+      </div>
       <br />
-      <div :if={@sets}>
+      <div :if={@sets} class="text-center">
         <h2>Symmetric Strength Scores:</h2>
         <%= for {exercise, score} <- calculate_scores(@sets) do %>
           <p style={"color: #{Strength.get_colour(score)}"}>
