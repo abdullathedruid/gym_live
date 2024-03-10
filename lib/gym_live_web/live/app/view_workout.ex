@@ -27,7 +27,8 @@ defmodule GymLiveWeb.ViewWorkout do
       </p>
       <br />
       <div class="flex flex-col w-full">
-        <%= for {exercise, sets} <- Enum.group_by(@sets, & &1.exercise) do %>
+        <%= for {exercise, sets} <- Enum.group_by(@sets, & &1.exercise)
+        |> Enum.sort_by(fn {_ex, se} -> hd(se).inserted_at end) do %>
           <div class="uppercase text-center font-bold">
             <%= Exercises.get_exercise_name(exercise) %>
           </div>
