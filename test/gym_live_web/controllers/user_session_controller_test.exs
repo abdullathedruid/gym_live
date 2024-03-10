@@ -17,10 +17,8 @@ defmodule GymLiveWeb.UserSessionControllerTest do
       assert get_session(conn, :user_token)
       assert redirected_to(conn) == ~p"/workouts"
 
-      # Now do a logged in request and assert on the menu
       conn = get(conn, ~p"/")
-      response = html_response(conn, 200)
-      assert response =~ "Welcome back!"
+      assert redirected_to(conn) == ~p"/workouts"
     end
 
     test "logs the user in with remember me", %{conn: conn, user: user} do

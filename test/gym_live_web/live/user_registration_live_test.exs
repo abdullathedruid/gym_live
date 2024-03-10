@@ -49,10 +49,7 @@ defmodule GymLiveWeb.UserRegistrationLiveTest do
 
       # Now do a logged in request and assert on the menu
       conn = get(conn, "/")
-      response = html_response(conn, 200)
-
-      assert response =~ "GymLive"
-      assert response =~ "An app to make you stronk."
+      assert redirected_to(conn) == ~p"/workouts"
     end
 
     test "renders errors for duplicated email", %{conn: conn} do
