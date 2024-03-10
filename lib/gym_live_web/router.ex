@@ -17,12 +17,6 @@ defmodule GymLiveWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", GymLiveWeb do
-    pipe_through :browser
-
-    get "/", PageController, :home
-  end
-
   # Other scopes may use custom stacks.
   # scope "/api", GymLiveWeb do
   #   pipe_through :api
@@ -52,6 +46,7 @@ defmodule GymLiveWeb.Router do
 
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{GymLiveWeb.UserAuth, :redirect_if_user_is_authenticated}] do
+      get "/", PageController, :home
       live "/users/register", UserRegistrationLive, :new
       live "/users/log_in", UserLoginLive, :new
       live "/users/reset_password", UserForgotPasswordLive, :new
