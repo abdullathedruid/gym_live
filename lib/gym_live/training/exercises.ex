@@ -13,7 +13,10 @@ defmodule GymLive.Training.Exercises do
     shrugs: "Shrugs",
     incline_bench: "Incline Bench Press",
     press_db: "Press (Dumbell)",
-    bench_db: "Bench Press (Dumbell)"
+    bench_db: "Bench Press (Dumbell)",
+    lat_pulldown: "Lat pulldown",
+    chest_fly: "Chest fly",
+    tricep_extensions: "Tricep extensions"
   ]
   def valid_exercises_map, do: @valid_execises
 
