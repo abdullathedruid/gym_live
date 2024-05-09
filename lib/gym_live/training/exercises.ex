@@ -3,13 +3,17 @@ defmodule GymLive.Training.Exercises do
     squat: "Squat",
     press: "Press",
     chins: "Chins",
+    pullups: "Pull ups",
     face_pulls: "Face Pulls",
     dips: "Dips",
     deadlift: "Deadlift",
     bench_press: "Bench Press",
     rows: "Rows",
     curls: "Curls",
-    shrugs: "Shrugs"
+    shrugs: "Shrugs",
+    incline_bench: "Incline Bench Press",
+    press_db: "Press (Dumbell)",
+    bench_db: "Bench Press (Dumbell)"
   ]
   def valid_exercises_map, do: @valid_execises
 
