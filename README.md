@@ -2,6 +2,10 @@
 
 A progressive web app workout tracking app, hosted at [fly.io](https://frosty-rain-4402.fly.dev/)
 
+<img src="https://github.com/abdullathedruid/gym_live/assets/8117454/45ea7883-4ce4-4507-b51a-4ceda1b8f4ff" width="207" height="448">
+
+<img src="https://github.com/abdullathedruid/gym_live/assets/8117454/d531952b-4448-434f-ae2f-e67f4c23b887" width="207" height="448">
+
 ## Instructions 
 
 To start your Phoenix server:
