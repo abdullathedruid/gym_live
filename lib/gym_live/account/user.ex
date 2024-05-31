@@ -14,6 +14,12 @@ defmodule GymLive.Account.User do
     timestamps()
   end
 
+  @type t :: %__MODULE__{
+          email: String.t(),
+          confirmed_at: NaiveDateTime.t(),
+          workouts: [GymLive.Training.Workout.t()]
+        }
+
   @doc """
   A user changeset for registration.
 

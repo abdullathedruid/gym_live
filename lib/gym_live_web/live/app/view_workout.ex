@@ -1,5 +1,6 @@
 defmodule GymLiveWeb.ViewWorkout do
   use GymLiveWeb, :live_app
+  import GymLiveWeb.StrongMan
   alias GymLive.Strength
   alias GymLive.Training.{Exercises, Set}
 
@@ -46,7 +47,9 @@ defmodule GymLiveWeb.ViewWorkout do
           </div>
         <% end %>
       </div>
-      <br />
+      <div class="m-8">
+        <.strong_man />
+      </div>
       <div :if={@sets} class="text-center">
         <h2>Symmetric Strength Scores:</h2>
         <%= for {exercise, score} <- calculate_scores(@sets) do %>

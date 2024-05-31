@@ -91,15 +91,15 @@ defmodule GymLive.Strength do
   end
 
   @spec pow(Decimal.t(), non_neg_integer()) :: Decimal.t()
-  defp pow(_x, 0), do: Decimal.new(1)
-  defp pow(x, 1), do: x
+  defp pow(%Decimal{} = _x, 0), do: Decimal.new(1)
+  defp pow(%Decimal{} = x, 1), do: x
 
-  defp pow(x, n) when rem(n, 2) == 0 do
+  defp pow(%Decimal{} = x, n) when rem(n, 2) == 0 do
     sqrt_result = pow(x, div(n, 2))
     Decimal.mult(sqrt_result, sqrt_result)
   end
 
-  defp pow(x, n), do: Decimal.mult(x, pow(x, n - 1))
+  defp pow(%Decimal{} = x, n), do: Decimal.mult(x, pow(x, n - 1))
 
   # _this.state.results.lifts[lift].userScore = Math.round(
   # Strength.singleLiftStrengthScore(_this.state.unitSystem, _this.state.sex, _this.state.age, _this.state.bodyweight, lf.liftName, oneRM)

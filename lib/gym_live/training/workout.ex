@@ -14,6 +14,14 @@ defmodule GymLive.Training.Workout do
     timestamps()
   end
 
+  @type t :: %__MODULE__{
+          status: :started | :completed | :deleted,
+          title: String.t(),
+          user_id: String.t(),
+          user: GymLive.Account.User.t(),
+          sets: [GymLive.Training.Set.t()]
+        }
+
   @doc false
   def changeset(workout, attrs) do
     workout
