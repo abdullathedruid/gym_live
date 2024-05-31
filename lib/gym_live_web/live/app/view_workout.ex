@@ -3,6 +3,7 @@ defmodule GymLiveWeb.ViewWorkout do
   import GymLiveWeb.StrongMan
   alias GymLive.Strength
   alias GymLive.Training.{Exercises, Set}
+  alias GymLiveWeb.StrongMan
 
   def mount(%{"id" => workout_id}, _session, socket) do
     workout = GymLive.Training.get_workout!(workout_id)
@@ -48,7 +49,7 @@ defmodule GymLiveWeb.ViewWorkout do
         <% end %>
       </div>
       <div class="m-8">
-        <.strong_man />
+        <.strong_man colours={get_colours(@sets)} />
       </div>
       <div :if={@sets} class="text-center">
         <h2>Symmetric Strength Scores:</h2>
@@ -61,6 +62,34 @@ defmodule GymLiveWeb.ViewWorkout do
       </div>
     </div>
     """
+  end
+
+  defp get_colours(sets) do
+    struct(
+      StrongMan.Colours,
+      Enum.reduce(sets, %{}, fn %Set{exercise: exercise}, acc ->
+        Exercises.get_exercise_muscles(exercise)
+        |> Enum.reduce(
+          acc,
+          fn {exercise, ratio}, acc ->
+            Map.update(acc, exercise, ratio, fn prev -> Decimal.add(prev, ratio) end)
+          end
+        )
+      end)
+      |> convert_ratios_to_colours()
+    )
+  end
+
+  defp convert_ratios_to_colours(ratios) do
+    denom =
+      Enum.reduce(ratios, Decimal.new(0), fn {_exercise, ratio}, acc ->
+        Decimal.add(ratio, acc)
+      end)
+
+    Enum.map(ratios, fn {k, v} ->
+      {k,
+       "##{Decimal.mult(255, v) |> Decimal.div(denom) |> Decimal.round() |> Decimal.to_integer() |> Integer.to_string(16)}0000"}
+    end)
   end
 
   def handle_params(_unsigned_params, _uri, socket) do
