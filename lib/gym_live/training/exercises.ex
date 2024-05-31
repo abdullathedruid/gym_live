@@ -66,7 +66,16 @@ defmodule GymLive.Training.Exercises do
       traps: Decimal.new("0.603")
     },
     press: %{traps: Decimal.new("0.270"), delts: Decimal.new("0.730")},
-    press_db: %{traps: Decimal.new("0.182"), delts: Decimal.new("0.818")}
+    press_db: %{traps: Decimal.new("0.182"), delts: Decimal.new("0.818")},
+    # https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5435978/
+    squat: %{quads: Decimal.new("0.833"), glutes: Decimal.new("0.167")},
+    # https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7046193/#:~:text=Deadlift%20also%20showed%20greater%20activation,femoris%20within%20hamstring%20muscles%20complex.
+    deadlift: %{
+      quads: Decimal.new("0.207"),
+      glutes: Decimal.new("0.205"),
+      hamstrings: Decimal.new("0.270"),
+      adductors: Decimal.new("0.318")
+    }
   }
 
   def valid_exercises_map, do: @valid_execises
