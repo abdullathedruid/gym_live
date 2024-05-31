@@ -45,7 +45,28 @@ defmodule GymLive.Training.Exercises do
     incline_bench_db: %{pecs: Decimal.new("0.897"), triceps: Decimal.new("0.102")},
     dips: %{pecs: Decimal.new("0.815"), triceps: Decimal.new("0.185")},
     tricep_extensions: %{pecs: Decimal.new("0.423"), triceps: Decimal.new("0.576")},
-    chest_fly: %{pecs: Decimal.new("0.970"), triceps: Decimal.new("0.029")}
+    chest_fly: %{pecs: Decimal.new("0.970"), triceps: Decimal.new("0.029")},
+    # https://forums.t-nation.com/t/inside-the-muscles-best-back-and-biceps-exercises/284621
+    rows: %{biceps: Decimal.new("0.086"), lats: Decimal.new("0.357"), traps: Decimal.new("0.557")},
+    pullups: %{
+      biceps: Decimal.new("0.169"),
+      lats: Decimal.new("0.334"),
+      traps: Decimal.new("0.330"),
+      delts: Decimal.new("0.167")
+    },
+    chins: %{
+      biceps: Decimal.new("0.292"),
+      lats: Decimal.new("0.295"),
+      traps: Decimal.new("0.308"),
+      delts: Decimal.new("0.106")
+    },
+    curls: %{
+      biceps: Decimal.new("0.283"),
+      lats: Decimal.new("0.113"),
+      traps: Decimal.new("0.603")
+    },
+    press: %{traps: Decimal.new("0.270"), delts: Decimal.new("0.730")},
+    press_db: %{traps: Decimal.new("0.182"), delts: Decimal.new("0.818")}
   }
 
   def valid_exercises_map, do: @valid_execises
