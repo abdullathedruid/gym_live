@@ -88,7 +88,7 @@ defmodule GymLiveWeb.ViewWorkout do
 
     Enum.map(ratios, fn {k, v} ->
       {k,
-       "##{Decimal.mult(255, v) |> Decimal.div(denom) |> Decimal.round() |> Decimal.to_integer() |> Integer.to_string(16)}0000"}
+       "hsl(0, #{Decimal.mult(100, v) |> Decimal.div(denom) |> Decimal.round() |> Decimal.to_integer()}%, 50%)"}
     end)
   end
 
