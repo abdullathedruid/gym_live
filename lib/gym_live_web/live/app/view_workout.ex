@@ -81,14 +81,12 @@ defmodule GymLiveWeb.ViewWorkout do
   end
 
   defp convert_ratios_to_colours(ratios) do
-    denom =
-      Enum.reduce(ratios, Decimal.new(0), fn {_exercise, ratio}, acc ->
-        Decimal.add(ratio, acc)
-      end)
+    {_exercise, denom} =
+      Enum.max_by(ratios, fn {_exercise, ratio} -> ratio end)
 
     Enum.map(ratios, fn {k, v} ->
       {k,
-       "hsl(0, #{Decimal.mult(100, v) |> Decimal.div(denom) |> Decimal.round() |> Decimal.to_integer()}%, 50%)"}
+       "hsl(0, #{Decimal.mult(100, v) |> Decimal.div(denom) |> Decimal.round() |> Decimal.to_integer()}%, 40%)"}
     end)
   end
 
