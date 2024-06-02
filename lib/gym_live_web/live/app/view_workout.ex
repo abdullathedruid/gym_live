@@ -80,7 +80,7 @@ defmodule GymLiveWeb.ViewWorkout do
     )
   end
 
-  defp convert_ratios_to_colours(empty_map) when is_map(empty_map) when empty_map == %{}, do: []
+  defp convert_ratios_to_colours(empty_map) when is_map(empty_map) and empty_map == %{}, do: []
 
   defp convert_ratios_to_colours(ratios) do
     {_exercise, denom} =
