@@ -38,43 +38,112 @@ defmodule GymLive.Training.Exercises do
   ]
 
   @exercise_muscles %{
-    # https://forums.t-nation.com/t/inside-the-muscles-best-chest-and-triceps-exercises/284620
-    bench_press: %{pecs: Decimal.new("0.898"), triceps: Decimal.new("0.101")},
-    incline_bench: %{pecs: Decimal.new("0.905"), triceps: Decimal.new("0.094")},
-    bench_db: %{pecs: Decimal.new("0.904"), triceps: Decimal.new("0.095")},
-    incline_bench_db: %{pecs: Decimal.new("0.897"), triceps: Decimal.new("0.102")},
-    dips: %{pecs: Decimal.new("0.815"), triceps: Decimal.new("0.185")},
-    tricep_extensions: %{pecs: Decimal.new("0.423"), triceps: Decimal.new("0.576")},
-    chest_fly: %{pecs: Decimal.new("0.970"), triceps: Decimal.new("0.029")},
-    # https://forums.t-nation.com/t/inside-the-muscles-best-back-and-biceps-exercises/284621
-    rows: %{biceps: Decimal.new("0.086"), lats: Decimal.new("0.357"), traps: Decimal.new("0.557")},
-    pullups: %{
-      biceps: Decimal.new("0.169"),
-      lats: Decimal.new("0.334"),
-      traps: Decimal.new("0.330"),
-      delts: Decimal.new("0.167")
+    # ollama-3
+    squat: %{
+      quads: Decimal.new("0.65"),
+      glutes: Decimal.new("0.15"),
+      hamstrings: Decimal.new("0.25"),
+      abs: Decimal.new("0.1")
+    },
+    press: %{
+      traps: Decimal.new("0.35"),
+      delts: Decimal.new("0.55"),
+      serratus: Decimal.new("0.15"),
+      abs: Decimal.new("0.1")
     },
     chins: %{
-      biceps: Decimal.new("0.292"),
-      lats: Decimal.new("0.295"),
-      traps: Decimal.new("0.308"),
-      delts: Decimal.new("0.106")
+      biceps: Decimal.new("0.25"),
+      lats: Decimal.new("0.70"),
+      traps: Decimal.new("0.10"),
+      rhomboids: Decimal.new("0.05"),
+      # adding obliques extra
+      obliques: Decimal.new("0.05"),
+      # adding forearms extra
+      forearms: Decimal.new("0.05")
     },
-    curls: %{
-      biceps: Decimal.new("0.283"),
-      lats: Decimal.new("0.113"),
-      traps: Decimal.new("0.603")
+    pullups: %{
+      lats: Decimal.new("0.65"),
+      traps: Decimal.new("0.20"),
+      delts: Decimal.new("0.15"),
+      rhomboids: Decimal.new("0.1"),
+      # adding obliques extra
+      obliques: Decimal.new("0.1"),
+      # adding forearms extra
+      forearms: Decimal.new("0.05")
     },
-    press: %{traps: Decimal.new("0.270"), delts: Decimal.new("0.730")},
-    press_db: %{traps: Decimal.new("0.182"), delts: Decimal.new("0.818")},
-    # https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5435978/
-    squat: %{quads: Decimal.new("0.833"), glutes: Decimal.new("0.167")},
-    # https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7046193/#:~:text=Deadlift%20also%20showed%20greater%20activation,femoris%20within%20hamstring%20muscles%20complex.
+    face_pulls: %{
+      traps: Decimal.new("0.85"),
+      levator_scapulae: Decimal.new("0.15"),
+      rhmoboids: Decimal.new("0.1"),
+      # adding obliques extra
+      obliques: Decimal.new("0.1")
+    },
+    dips: %{
+      triceps: Decimal.new("0.75"),
+      deltoid: Decimal.new("0.20"),
+      abs: Decimal.new("0.1"),
+      # adding forearms extra
+      forearms: Decimal.new("0.05")
+    },
     deadlift: %{
-      quads: Decimal.new("0.207"),
-      glutes: Decimal.new("0.205"),
-      hamstrings: Decimal.new("0.270"),
-      adductors: Decimal.new("0.318")
+      erector: Decimal.new("0.45"),
+      glutes: Decimal.new("0.3"),
+      hamstrings: Decimal.new("0.2"),
+      lower_back: Decimal.new("0.15"),
+      quads: Decimal.new("0.1"),
+      abs: Decimal.new("0.1")
+    },
+    bench_press: %{
+      pecs: Decimal.new("0.65"),
+      deltoid: Decimal.new("0.25"),
+      traps: Decimal.new("0.1"),
+      abs: Decimal.new("0.1")
+    },
+    rows: %{
+      lats: Decimal.new("0.55"),
+      traps: Decimal.new("0.35"),
+      rhomboids: Decimal.new("0.2"),
+      biceps: Decimal.new("0.1")
+    },
+    # brachialis as forearms
+    curls: %{biceps: Decimal.new("0.75"), forearms: Decimal.new("0.25"), abs: Decimal.new("0.1")},
+    incline_bench: %{
+      pecs: Decimal.new("0.7"),
+      deltoid: Decimal.new("0.25"),
+      traps: Decimal.new("0.1"),
+      abs: Decimal.new("0.1")
+    },
+    press_db: %{
+      delts: Decimal.new("0.55"),
+      traps: Decimal.new("0.35"),
+      serratus: Decimal.new("0.15"),
+      abs: Decimal.new("0.1")
+    },
+    bench_db: %{
+      pecs: Decimal.new("0.65"),
+      delts: Decimal.new("0.25"),
+      traps: Decimal.new("0.1"),
+      abs: Decimal.new("0.1")
+    },
+    incline_bench_db: %{
+      pecs: Decimal.new("0.7"),
+      delts: Decimal.new("0.25"),
+      traps: Decimal.new("0.1"),
+      abs: Decimal.new("0.1")
+    },
+    lat_pulldown: %{
+      lats: Decimal.new("0.85"),
+      traps: Decimal.new("0.15"),
+      rhomboids: Decimal.new("0.1"),
+      # adding obliques extra
+      obliques: Decimal.new("0.1")
+    },
+    chest_fly: %{pecs: Decimal.new("0.75"), delts: Decimal.new("0.25"), abs: Decimal.new("0.1")},
+    # using forearms for anconeus
+    tricep_extensions: %{
+      triceps: Decimal.new("0.85"),
+      forearms: Decimal.new("0.15"),
+      abs: Decimal.new("0.1")
     }
   }
 

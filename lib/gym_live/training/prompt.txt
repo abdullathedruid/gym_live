@@ -1,0 +1,51 @@
+Can you create a table for various weight-lifting exercises which includes the muscles activated as part of that exercises and the percentage amount of relative involvemen of those muscles.
+I would like you to include the following exercises:
+Squat
+Press
+Chins
+Pull ups
+Face Pulls
+Dips
+Deadlift
+Bench Press
+Rows
+Curls
+Shrugs
+Incline Bench Press
+Press (Dumbell)
+Bench Press (Dumbell)
+Incline Bench Press (Dumbell)
+Lat pulldown
+Chest fly
+Tricep extensions
+
+
+Here is the table with the requested exercises, along with the muscles activated and their relative involvement percentages:
+
+| Exercise | Muscle Involvement (approximate percentage) |
+| --- | --- |
+| Squat | Quadriceps (60-65), Hamstrings (20-25), Gluteals (10-15), Core stabilizers (5-10) |
+| Press (Barbell) | Deltoids (50-55), Trapezius (30-35), Serratus anterior (10-15), Core stabilizers (5-10) |
+| Chins | Latissimus dorsi (65-70), Biceps brachii (20-25), Trapezius (5-10), Rhomboids (5) |
+| Pull-ups | Latissimus dorsi (60-65), Trapezius (15-20), Deltoid (10-15), Rhomboids (5-10) |
+| Face Pulls | Trapezius (80-85), Levator scapulae (10-15), Rhomboids (5-10) |
+| Dips | Triceps brachii (70-75), Anterior deltoid (15-20), Core stabilizers (5-10) |
+| Deadlift | Erector spinae (40-45), Gluteals (25-30), Hamstrings (15-20), Lower back muscles (10-15), Quads (5-10), Core stabilizers (5-10) |
+| Bench Press | Pectoralis major (60-65), Anterior deltoid (20-25), Trapezius (5-10), Core stabilizers (5-10) |
+| Rows | Latissimus dorsi (50-55), Trapezius (30-35), Rhomboids (15-20), Biceps brachii (5-10) |
+| Curls | Biceps brachii (70-75), Brachialis (20-25), Core stabilizers (5-10) |
+| Shrugs | Trapezius (80-85), Levator scapulae (10-15), Rhomboids (5-10) |
+| Incline Bench Press | Pectoralis major (65-70), Anterior deltoid (20-25), Trapezius (5-10), Core stabilizers (5-10) |
+| Press (Dumbbell) | Deltoids (50-55), Trapezius (30-35), Serratus anterior (10-15), Core stabilizers (5-10) |
+| Bench Press (Dumbbell) | Pectoralis major (60-65), Anterior deltoid (20-25), Trapezius (5-10), Core stabilizers (5-10) |
+| Incline Bench Press (Dumbbell) | Pectoralis major (65-70), Anterior deltoid (20-25), Trapezius (5-10), Core stabilizers (5-10) |
+| Lat Pulldown | Latissimus dorsi (80-85), Trapezius (10-15), Rhomboids (5-10) |
+| Chest Fly | Pectoralis major (70-75), Anterior deltoid (20-25), Core stabilizers (5-10) |
+| Tricep Extensions | Triceps brachii (80-85), Anconeus (10-15), Core stabilizers (5-10) |
+
+Note:
+
+* The percentages are approximate and may vary depending on individual factors, such as body positioning, grip strength, and overall lifting technique.
+* Some exercises may also engage other smaller muscle groups or stabilizers to varying degrees. These percentages represent the primary muscles involved in each exercise.
+
+Keep in mind that proper form and technique are essential for effectively engaging the target muscles and minimizing the risk of injury when performing these exercises.
