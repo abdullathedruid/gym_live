@@ -51,15 +51,6 @@ defmodule GymLiveWeb.ViewWorkout do
       <div class="m-8">
         <.strong_man colours={get_colours(@sets)} />
       </div>
-      <div :if={@sets} class="text-center">
-        <h2>Symmetric Strength Scores:</h2>
-        <%= for {exercise, score} <- calculate_scores(@sets) do %>
-          <p style={"color: #{Strength.get_colour(score)}"}>
-            <%= Strength.get_breakpoint(score) |> String.upcase() %>
-            <%= Exercises.get_exercise_name(exercise) %> <%= score %>
-          </p>
-        <% end %>
-      </div>
     </div>
     """
   end
