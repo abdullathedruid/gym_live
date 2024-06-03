@@ -20,6 +20,22 @@ defmodule GymLiveWeb.ViewWorkout do
     {:ok, socket}
   end
 
+  defp group_by_weight(sets), do: group_by_weight(sets, [])
+
+  defp group_by_weight([], acc), do: Enum.reverse(acc)
+
+  defp group_by_weight([hd | tl], []) do
+    group_by_weight(tl, [{hd.weight, [hd]}])
+  end
+
+  defp group_by_weight([hd | tl], [{prev_weight, prev_sets} | rest] = acc) do
+    if hd.weight == prev_weight do
+      group_by_weight(tl, [{hd.weight, prev_sets ++ [hd]} | rest])
+    else
+      group_by_weight(tl, [{hd.weight, [hd]} | acc])
+    end
+  end
+
   def render(assigns) do
     ~H"""
     <div class="mx-auto px-3 py-3">
@@ -35,7 +51,7 @@ defmodule GymLiveWeb.ViewWorkout do
             <%= Exercises.get_exercise_name(exercise) %>
           </div>
           <div
-            :for={{weight, sets_per_weight} <- Enum.group_by(sets, & &1.weight)}
+            :for={{weight, sets_per_weight} <- group_by_weight(sets) |> dbg()}
             class="flex flex-row gap-3 justify-center"
           >
             <div class="">
@@ -87,6 +103,7 @@ defmodule GymLiveWeb.ViewWorkout do
     {:noreply, socket}
   end
 
+  # deprecated
   def calculate_scores(sets) do
     Enum.reduce(sets, %{}, fn %Set{reps: reps, weight: weight, exercise: exercise}, acc ->
       if exercise in [:squat, :press, :bench_press, :deadlift] do
