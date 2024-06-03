@@ -51,7 +51,7 @@ defmodule GymLiveWeb.ViewWorkout do
             <%= Exercises.get_exercise_name(exercise) %>
           </div>
           <div
-            :for={{weight, sets_per_weight} <- group_by_weight(sets) |> dbg()}
+            :for={{weight, sets_per_weight} <- group_by_weight(sets)}
             class="flex flex-row gap-3 justify-center"
           >
             <div class="">
