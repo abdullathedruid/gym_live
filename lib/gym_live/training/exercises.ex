@@ -144,7 +144,8 @@ defmodule GymLive.Training.Exercises do
       triceps: Decimal.new("0.85"),
       forearms: Decimal.new("0.15"),
       abs: Decimal.new("0.1")
-    }
+    },
+    shrugs: %{traps: Decimal.new("0.9"), delts: Decimal.new("0.1")}
   }
 
   def valid_exercises_map, do: @valid_execises
