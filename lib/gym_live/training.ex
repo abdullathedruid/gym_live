@@ -251,4 +251,16 @@ defmodule GymLive.Training do
   def change_set(set_or_changeset, attrs \\ %{}) do
     Set.changeset(set_or_changeset, attrs)
   end
+
+  @doc """
+  Gets the most recent workout.
+  """
+  def get_latest_workout do
+    from(w in Workout,
+      order_by: [desc: w.inserted_at],
+      limit: 1,
+      select: w)
+    |> preload(sets: ^from(s in Set, order_by: s.inserted_at))
+    |> Repo.one()
+  end
 end

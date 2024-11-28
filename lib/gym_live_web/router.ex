@@ -68,6 +68,7 @@ defmodule GymLiveWeb.Router do
   scope "/", GymLiveWeb do
     pipe_through [:browser]
 
+    get "/frames/last-workout", FrameController, :last_workout
     delete "/users/log_out", UserSessionController, :delete
 
     live_session :current_user,

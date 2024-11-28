@@ -71,7 +71,7 @@ defmodule GymLiveWeb.Live.Workouts.ViewWorkout do
     """
   end
 
-  defp get_colours(sets) do
+  def get_colours(sets) do
     struct(
       StrongMan.Colours,
       Enum.reduce(sets, %{}, fn %Set{exercise: exercise}, acc ->
