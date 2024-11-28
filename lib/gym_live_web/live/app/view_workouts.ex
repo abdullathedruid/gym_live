@@ -5,8 +5,10 @@ defmodule GymLiveWeb.ViewWorkouts do
 
   def mount(_params, _session, socket) do
     # todo/optimization: add pagination/infinite scroll
-    workouts = Training.list_completed_workouts_for_user(socket.assigns.current_user)
-    |> Repo.preload(:sets)  # Preload sets to avoid N+1 queries
+    workouts =
+      Training.list_completed_workouts_for_user(socket.assigns.current_user)
+      # Preload sets to avoid N+1 queries
+      |> Repo.preload(:sets)
 
     {:ok,
      socket
@@ -39,12 +41,27 @@ defmodule GymLiveWeb.ViewWorkouts do
                   </div>
                   <div class="flex items-center gap-6 px-6 pb-4 sm:pb-0">
                     <p class="text-sm text-gray-600">
-                      <span class="font-medium text-gray-900"><%= length(workout.sets) %> exercises</span>
+                      <span class="font-medium text-gray-900">
+                        <%= length(workout.sets) %> exercises
+                      </span>
                       <span class="mx-2">·</span>
-                      <span><%= format_duration(Timex.diff(workout.updated_at, workout.inserted_at, :duration)) %></span>
+                      <span>
+                        <%= format_duration(
+                          Timex.diff(workout.updated_at, workout.inserted_at, :duration)
+                        ) %>
+                      </span>
                     </p>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 group-hover:text-blue-600 transition-colors duration-200" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 text-gray-400 group-hover:text-blue-600 transition-colors duration-200"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                        clip-rule="evenodd"
+                      />
                     </svg>
                   </div>
                 </div>
@@ -54,11 +71,17 @@ defmodule GymLiveWeb.ViewWorkouts do
         </div>
       </div>
     </div>
-    <div :if={@workouts == []} class="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4">
+    <div
+      :if={@workouts == []}
+      class="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4"
+    >
       <div class="text-center">
         <h2 class="text-2xl font-semibold text-gray-900 mb-2">No Workouts Yet</h2>
         <p class="text-gray-600 mb-6">Start tracking your fitness journey today!</p>
-        <.link patch={~p"/edit_workout"} class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+        <.link
+          patch={~p"/edit_workout"}
+          class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
           Create Your First Workout
         </.link>
       </div>
