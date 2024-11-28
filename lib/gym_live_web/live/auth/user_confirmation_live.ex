@@ -1,4 +1,4 @@
-defmodule GymLiveWeb.UserConfirmationLive do
+defmodule GymLiveWeb.Live.Auth.UserConfirmation do
   use GymLiveWeb, :live_view
 
   alias GymLive.Account

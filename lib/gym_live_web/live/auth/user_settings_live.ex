@@ -1,4 +1,4 @@
-defmodule GymLiveWeb.UserSettingsLive do
+defmodule GymLiveWeb.Live.Auth.UserSettings do
   use GymLiveWeb, :live_view
 
   alias GymLive.Account

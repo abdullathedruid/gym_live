@@ -1,4 +1,4 @@
-defmodule GymLiveWeb.ViewWorkout do
+defmodule GymLiveWeb.Live.Workouts.ViewWorkout do
   use GymLiveWeb, :live_app
   import GymLiveWeb.StrongMan
   alias GymLive.Strength
