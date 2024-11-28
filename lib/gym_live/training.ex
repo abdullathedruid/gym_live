@@ -255,11 +255,13 @@ defmodule GymLive.Training do
   @doc """
   Gets the most recent workout.
   """
-  def get_latest_workout do
+  def get_latest_workout_for(userid) do
     from(w in Workout,
+      where: w.user_id == ^userid,
       order_by: [desc: w.inserted_at],
       limit: 1,
-      select: w)
+      select: w
+    )
     |> preload(sets: ^from(s in Set, order_by: s.inserted_at))
     |> Repo.one()
   end

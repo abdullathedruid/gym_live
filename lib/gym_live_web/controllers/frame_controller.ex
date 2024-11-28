@@ -22,16 +22,21 @@ defmodule GymLiveWeb.FrameController do
               adductors: "#494949"]
   end
 
-  def last_workout(conn, _params) do
+  def last_workout(conn, %{"userid" => userid}) do
+    IO.inspect(userid)
     # Get the last workout for display
-    last_workout = Training.get_latest_workout()
-    colors = ViewWorkout.get_colours(last_workout.sets)
+    svg = case Training.get_latest_workout_for(userid) do
+      nil -> "PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IS0tIFVwbG9hZGVkIHRvOiBTVkcgUmVwbywgd3d3LnN2Z3JlcG8uY29tLCBHZW5lcmF0b3I6IFNWRyBSZXBvIE1peGVyIFRvb2xzIC0tPgo8c3ZnIHdpZHRoPSI4MDBweCIgaGVpZ2h0PSI4MDBweCIgdmlld0JveD0iMCAwIDI0IDI0IiBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDpub25lO3N0cm9rZTojMDIwMjAyO3N0cm9rZS1taXRlcmxpbWl0OjEwO3N0cm9rZS13aWR0aDoxLjkycHg7fTwvc3R5bGU+PC9kZWZzPjxsaW5lIGNsYXNzPSJjbHMtMSIgeDE9IjAuNSIgeTE9IjEyIiB4Mj0iMi40MiIgeTI9IjEyIi8+PGxpbmUgY2xhc3M9ImNscy0xIiB4MT0iNi4yNSIgeTE9IjEzLjkyIiB4Mj0iMTcuNzUiIHkyPSIxMy45MiIvPjxsaW5lIGNsYXNzPSJjbHMtMSIgeDE9IjYuMjUiIHkxPSIxMC4wOCIgeDI9IjE3Ljc1IiB5Mj0iMTAuMDgiLz48bGluZSBjbGFzcz0iY2xzLTEiIHgxPSIyMS41OCIgeTE9IjEyIiB4Mj0iMjMuNSIgeTI9IjEyIi8+PHJlY3QgY2xhc3M9ImNscy0xIiB4PSIyLjQyIiB5PSI1LjI5IiB3aWR0aD0iNC43OSIgaGVpZ2h0PSIxMy40MiIgcng9IjIuMTQiLz48cmVjdCBjbGFzcz0iY2xzLTEiIHg9IjE2Ljc5IiB5PSI1LjI5IiB3aWR0aD0iNC43OSIgaGVpZ2h0PSIxMy40MiIgcng9IjIuMTQiLz48L3N2Zz4="
+      |>then(&"data:image/svg+xml;base64,#{&1}")
+      workout ->
+        colors = ViewWorkout.get_colours(workout.sets)
+        generate_svg(colors, workout)
+    end
 
     conn
     |> put_resp_content_type("text/html")
     |> render("last_workout.html",
-      image: generate_svg(colors, last_workout),
-      workout: last_workout,
+      image: svg,
       host: GymLiveWeb.Endpoint.url()
     )
   end
