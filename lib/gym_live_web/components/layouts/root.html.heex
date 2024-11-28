@@ -6,12 +6,20 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#2563eb" />
+    <meta name="description" content="Track your workouts and progress in real-time" />
     <meta name="csrf-token" content={get_csrf_token()} />
     <.live_title>
       <%= assigns[:page_title] || "GymLive" %>
     </.live_title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/images/icons/icon-192x192.png" />
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
+    </script>
+    <script defer type="text/javascript" src="/js/pwa.js">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts">
     </script>
