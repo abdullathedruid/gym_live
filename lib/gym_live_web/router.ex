@@ -17,6 +17,19 @@ defmodule GymLiveWeb.Router do
     plug :accepts, ["json"]
   end
 
+  # Development routes
+  if Application.compile_env(:gym_live, :dev_routes) do
+    # Enable LiveDashboard and Swoosh mailbox preview in development
+    import Phoenix.LiveDashboard.Router
+
+    scope "/dev" do
+      pipe_through :browser
+
+      live_dashboard "/dashboard", metrics: GymLiveWeb.Telemetry
+      forward "/mailbox", Plug.Swoosh.MailboxPreview
+    end
+  end
+
   scope "/", GymLiveWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
