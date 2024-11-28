@@ -32,7 +32,7 @@ defmodule GymLiveWeb.Live.Workouts.EditWorkout do
 
   def render(assigns) do
     ~H"""
-    <div :if={@workout} class="h-full">
+    <div :if={@workout} class="flex flex-col h-screen">
       <.modal id="cancel-modal">
         <p>
           Are you sure you want to abandon your workout? Your workout data will be lost.
@@ -40,7 +40,7 @@ defmodule GymLiveWeb.Live.Workouts.EditWorkout do
         <div class="sm:flex sm:flex-row-reverse bg-gray-50 px-4 py-3 sm:px-6">
           <button
             phx-click="abandon_workout"
-            class="infline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+            class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
           >
             Abandon workout
           </button>
@@ -52,25 +52,35 @@ defmodule GymLiveWeb.Live.Workouts.EditWorkout do
           </button>
         </div>
       </.modal>
-      <div class="mx-2 my-2 flex flex-row justify-around">
-        <div>
-          <p class="text-3xl"><%= @workout.title %></p>
-          <p class=""><%= Time.format_time(@seconds) %></p>
-        </div>
-        <div class="flex flex-col justify-center">
-          <button class="bg-green-400 rounded-xl px-1 py-1" phx-click="save_workout">
+
+      <div class="sticky top-0 bg-blue-600 text-white px-6 py-4 font-semibold shadow-md">
+        <div class="flex justify-between items-center">
+          <div>
+            <h1 class="text-xl font-bold"><%= @workout.title %></h1>
+            <p class="text-sm text-blue-100"><%= Time.format_time(@seconds) %></p>
+          </div>
+          <button
+            phx-click="save_workout"
+            class="px-4 py-2 bg-green-500/90 hover:bg-green-500 text-white rounded-md transition duration-150 ease-in-out text-sm font-medium shadow-sm"
+          >
             Finish Workout
           </button>
         </div>
       </div>
-      <div class="mx-6 relative shadow-md rounded-lg overflow-x-clip">
-        <.sets_table :if={length(@workout.sets) > 0} workout={@workout} />
-      </div>
-      <.set_form form={@form} />
-      <div class="mt-16 flex-row flex justify-around">
-        <button phx-click={show_modal("cancel-modal")} class="bg-red-400 px-2 py-2 rounded-2xl">
-          Abandon workout
-        </button>
+
+      <div class="flex-grow min-h-screen w-full pb-24">
+        <div class="relative w-full bg-white">
+          <.sets_table :if={length(@workout.sets) > 0} workout={@workout} />
+          <.set_form form={@form} />
+          <div class="px-6 py-4">
+            <button
+              phx-click={show_modal("cancel-modal")}
+              class="max-w-xs mx-auto flex justify-center py-2 px-4 bg-red-500/90 hover:bg-red-500 text-white rounded-md transition duration-150 ease-in-out text-sm font-medium shadow-sm"
+            >
+              Abandon workout
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     """
@@ -78,39 +88,45 @@ defmodule GymLiveWeb.Live.Workouts.EditWorkout do
 
   def sets_table(assigns) do
     ~H"""
-    <table class="w-full text-sm text-left">
-      <thead class="text-xs uppercase">
-        <tr class="bg-gray-300">
-          <th scope="col" class="px-4 py-3">Exercise</th>
-          <th scope="col" class="px-4 py-3">Weight</th>
-          <th scope="col" class="px-4 py-3">Reps</th>
-          <th scope="col" class="px-4 py-3">Action</th>
-        </tr>
-      </thead>
-      <tbody id="sets">
-        <tr :for={set <- @workout.sets} class="even:bg-gray-100 odd:bg-gray-50">
-          <td class="px-4 py-3"><%= Exercises.get_exercise_name(set.exercise) %></td>
-          <td class="px-4 py-3"><%= set.weight %></td>
-          <td class="px-4 py-3"><%= set.reps %></td>
-          <td class="px-4 py-3 text-center">
-            <button phx-click="remove_set" phx-value-set-id={set.id}>
-              <.icon name="hero-x-mark" class="bg-red-500" />
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left">
+        <thead class="text-xs uppercase bg-gray-100">
+          <tr>
+            <th scope="col" class="px-6 py-3 font-medium text-gray-500">Exercise</th>
+            <th scope="col" class="px-6 py-3 font-medium text-gray-500">Weight</th>
+            <th scope="col" class="px-6 py-3 font-medium text-gray-500">Reps</th>
+            <th scope="col" class="px-6 py-3 font-medium text-gray-500">Action</th>
+          </tr>
+        </thead>
+        <tbody id="sets" class="divide-y divide-gray-100">
+          <tr :for={set <- @workout.sets} class="hover:bg-gray-50">
+            <td class="px-6 py-4 text-gray-900"><%= Exercises.get_exercise_name(set.exercise) %></td>
+            <td class="px-6 py-4 text-gray-900"><%= set.weight %></td>
+            <td class="px-6 py-4 text-gray-900"><%= set.reps %></td>
+            <td class="px-6 py-4">
+              <button
+                phx-click="remove_set"
+                phx-value-set-id={set.id}
+                class="text-red-500/90 hover:text-red-500 transition duration-150 ease-in-out"
+              >
+                <.icon name="hero-x-mark" class="h-5 w-5" />
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     """
   end
 
   def set_form(assigns) do
     ~H"""
-    <div class="rounded-lg bg-gray-300 mt-2 py-2 px-3">
+    <div class="p-6 border-t border-gray-100">
       <.simple_form for={@form} phx-change="validate" phx-submit="save_set">
-        <div>
-          <div class="flex flex-row gap-8 justify-around">
-            <div class="flex flex-col items-center ">
-              <p class="whitespace-nowrap">Exercise</p>
+        <div class="space-y-6">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="sm:col-span-1">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Exercise</label>
               <.input
                 field={@form[:exercise]}
                 type="select"
@@ -120,16 +136,19 @@ defmodule GymLiveWeb.Live.Workouts.EditWorkout do
                 }
               />
             </div>
-            <div class="flex flex-col items-center">
-              <p class="whitespace-nowrap">Weight (kg)</p>
-              <.input field={@form[:weight]} type="number" />
+            <div class="sm:col-span-1">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Weight (kg)</label>
+              <.input field={@form[:weight]} type="number" class="w-full" />
             </div>
-            <div class="flex flex-col items-center">
-              <p class="whitespace-nowrap">Reps</p>
-              <.input field={@form[:reps]} type="number" />
+            <div class="sm:col-span-1">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Reps</label>
+              <.input field={@form[:reps]} type="number" class="w-full" />
             </div>
           </div>
-          <button class="mt-3 mx-auto block bg-green-400 rounded-lg px-4 py-2" phx-throttle="1000">
+          <button
+            class="max-w-xs mx-auto flex justify-center py-2 px-4 bg-blue-500/90 hover:bg-blue-500 text-white rounded-md transition duration-150 ease-in-out text-sm font-medium shadow-sm"
+            phx-throttle="1000"
+          >
             Add set
           </button>
         </div>

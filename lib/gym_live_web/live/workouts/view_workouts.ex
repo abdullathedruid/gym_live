@@ -17,11 +17,11 @@ defmodule GymLiveWeb.Live.Workouts.ViewWorkouts do
 
   def render(assigns) do
     ~H"""
-    <div :if={match?([_ | _], @workouts)} class="flex flex-col h-screen bg-gray-50">
-      <div class="flex-grow min-h-screen w-full px-4 py-6">
-        <div class="relative w-full rounded-lg shadow-sm bg-white">
+    <div :if={match?([_ | _], @workouts)} class="flex flex-col h-screen">
+      <div class="flex-grow min-h-screen w-full pb-24">
+        <div class="relative w-full bg-white">
           <%= for {month, workouts} <- Enum.group_by(@workouts, &Timex.beginning_of_month(&1.inserted_at)) |> Enum.sort(&Timex.diff(elem(&1, 0), elem(&2, 0))>0) do %>
-            <div class="sticky top-0 bg-blue-600 text-white px-6 py-4 font-semibold shadow-md first:rounded-t-lg">
+            <div class="sticky top-0 bg-blue-600 text-white px-6 py-4 font-semibold shadow-md">
               <%= Timex.format!(month, "{Mfull} {YYYY}") %>
             </div>
             <div class="divide-y divide-gray-100">
