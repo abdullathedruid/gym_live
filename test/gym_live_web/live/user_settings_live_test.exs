@@ -164,7 +164,11 @@ defmodule GymLiveWeb.Live.Auth.UserSettingsTest do
 
       token =
         extract_user_token(fn url ->
-          GymLive.Account.deliver_user_update_email_instructions(%{user | email: email}, user.email, url)
+          GymLive.Account.deliver_user_update_email_instructions(
+            %{user | email: email},
+            user.email,
+            url
+          )
         end)
 
       %{conn: log_in_user(conn, user), token: token, email: email, user: user}

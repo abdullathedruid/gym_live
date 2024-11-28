@@ -50,7 +50,10 @@ defmodule GymLiveWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :require_authenticated_user,
-      on_mount: [{GymLiveWeb.UserAuth, :ensure_authenticated}, GymLiveWeb.Live.Components.Layout.Nav] do
+      on_mount: [
+        {GymLiveWeb.UserAuth, :ensure_authenticated},
+        GymLiveWeb.Live.Components.Layout.Nav
+      ] do
       live "/users/settings", Live.Auth.UserSettings, :edit
       live "/users/settings/confirm_email/:token", Live.Auth.UserSettings, :confirm_email
 
