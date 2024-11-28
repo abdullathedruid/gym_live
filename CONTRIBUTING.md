@@ -1,5 +1,12 @@
 # Contributing to GymLive
 
+## Development Setup
+
+1. **Install Dependencies**
+   ```bash
+   mix setup
+   ```
+
 ## Development Workflow
 
 1. **Create a Feature Branch**
@@ -13,11 +20,13 @@
    - Write your code
    - Commit regularly with meaningful commit messages
    - Keep commits focused and atomic
+   - Ensure code is properly formatted by running `mix format` before pushing
 
 3. **Push Changes**
    ```bash
    git push origin feature/your-feature-name
    ```
+   Note: Pull requests with unformatted code will not be accepted.
 
 4. **Create Pull Request**
    - Go to GitHub repository
@@ -54,6 +63,7 @@
 - Use meaningful variable and function names
 - Add comments for complex logic
 - Keep functions focused and manageable in size
+- Run `mix format` to ensure consistent code formatting
 
 ## Testing
 
