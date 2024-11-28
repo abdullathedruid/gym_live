@@ -38,3 +38,5 @@ npm-debug.log
 .env
 
 postgres-docker/
+.DS_Store
+**/.DS_Store
