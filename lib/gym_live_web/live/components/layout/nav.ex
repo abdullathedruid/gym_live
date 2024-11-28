@@ -1,6 +1,7 @@
 defmodule GymLiveWeb.Live.Components.Layout.Nav do
   alias GymLiveWeb.Live.Workouts.{EditWorkout, ViewWorkout, ViewWorkouts}
   alias GymLiveWeb.Live.Charts.ViewCharts
+  alias GymLiveWeb.Live.Auth.UserSettings
   import Phoenix.LiveView
   use Phoenix.Component
 
@@ -24,6 +25,9 @@ defmodule GymLiveWeb.Live.Components.Layout.Nav do
 
         {ViewCharts, _} ->
           :view_charts
+
+        {UserSettings, _} ->
+          :settings
 
         _ ->
           nil
