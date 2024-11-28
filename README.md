@@ -20,7 +20,7 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 ## To run database locally
 
 ```sh
-docker run --name gym-live-db -e POSTGRES_PASSWORD=password -e POSTGRES_USER=postgres -d -p 5432:5432 -d --rm -v ${PWD}/postgres-docker:/var/lib/postgresql/data postgres
+docker run --name gym-live-db -e POSTGRES_PASSWORD=password -e POSTGRES_USER=postgres -d -p 5432:5432 -d --rm -v ${PWD}/postgres-docker:/var/lib/postgresql/data postgres:15
 ```
 
 ## Known issues
