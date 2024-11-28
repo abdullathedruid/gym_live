@@ -1,4 +1,4 @@
-defmodule GymLiveWeb.ViewCharts do
+defmodule GymLiveWeb.Live.Charts.ViewCharts do
   use GymLiveWeb, :live_app
   import GymLiveWeb.Charts
   alias GymLive.{Strength, Training}

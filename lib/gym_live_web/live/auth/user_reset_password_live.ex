@@ -1,4 +1,4 @@
-defmodule GymLiveWeb.UserResetPasswordLive do
+defmodule GymLiveWeb.Live.Auth.UserResetPassword do
   use GymLiveWeb, :live_view
 
   alias GymLive.Account

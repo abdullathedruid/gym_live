@@ -1,7 +1,6 @@
-defmodule GymLiveWeb.UserSettingsLiveTest do
+defmodule GymLiveWeb.Live.Auth.UserSettingsTest do
   use GymLiveWeb.ConnCase
 
-  alias GymLive.Account
   import Phoenix.LiveViewTest
   import GymLive.AccountFixtures
 
@@ -46,7 +45,7 @@ defmodule GymLiveWeb.UserSettingsLiveTest do
         |> render_submit()
 
       assert result =~ "A link to confirm your email"
-      assert Account.get_user_by_email(user.email)
+      assert GymLive.Account.get_user_by_email(user.email)
     end
 
     test "renders errors with invalid data (phx-change)", %{conn: conn} do
@@ -115,7 +114,7 @@ defmodule GymLiveWeb.UserSettingsLiveTest do
       assert Phoenix.Flash.get(new_password_conn.assigns.flash, :info) =~
                "Password updated successfully"
 
-      assert Account.get_user_by_email_and_password(user.email, new_password)
+      assert GymLive.Account.get_user_by_email_and_password(user.email, new_password)
     end
 
     test "renders errors with invalid data (phx-change)", %{conn: conn} do
@@ -165,7 +164,7 @@ defmodule GymLiveWeb.UserSettingsLiveTest do
 
       token =
         extract_user_token(fn url ->
-          Account.deliver_user_update_email_instructions(%{user | email: email}, user.email, url)
+          GymLive.Account.deliver_user_update_email_instructions(%{user | email: email}, user.email, url)
         end)
 
       %{conn: log_in_user(conn, user), token: token, email: email, user: user}
@@ -178,8 +177,8 @@ defmodule GymLiveWeb.UserSettingsLiveTest do
       assert path == ~p"/users/settings"
       assert %{"info" => message} = flash
       assert message == "Email changed successfully."
-      refute Account.get_user_by_email(user.email)
-      assert Account.get_user_by_email(email)
+      refute GymLive.Account.get_user_by_email(user.email)
+      assert GymLive.Account.get_user_by_email(email)
 
       # use confirm token again
       {:error, redirect} = live(conn, ~p"/users/settings/confirm_email/#{token}")
@@ -195,7 +194,7 @@ defmodule GymLiveWeb.UserSettingsLiveTest do
       assert path == ~p"/users/settings"
       assert %{"error" => message} = flash
       assert message == "Email change link is invalid or it has expired."
-      assert Account.get_user_by_email(user.email)
+      assert GymLive.Account.get_user_by_email(user.email)
     end
 
     test "redirects if user is not logged in", %{token: token} do

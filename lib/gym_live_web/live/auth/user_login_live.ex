@@ -1,4 +1,4 @@
-defmodule GymLiveWeb.UserLoginLive do
+defmodule GymLiveWeb.Live.Auth.UserLogin do
   use GymLiveWeb, :live_view
 
   def render(assigns) do

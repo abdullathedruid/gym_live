@@ -1,4 +1,4 @@
-defmodule GymLiveWeb.ViewWorkouts do
+defmodule GymLiveWeb.Live.Workouts.ViewWorkouts do
   use GymLiveWeb, :live_app
   alias GymLive.Training
   alias GymLive.Repo

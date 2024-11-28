@@ -1,4 +1,4 @@
-defmodule GymLiveWeb.UserLoginLiveTest do
+defmodule GymLiveWeb.Live.Auth.UserLoginTest do
   use GymLiveWeb.ConnCase
 
   import Phoenix.LiveViewTest
