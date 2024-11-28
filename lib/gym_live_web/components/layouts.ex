@@ -11,7 +11,11 @@ defmodule GymLiveWeb.Layouts do
           <.nav_icon name="hero-pencil-square" highlighted={@active_tab == :edit_workout} label="Add" />
         </.link>
         <.link patch={~p"/workouts"} class="w-full">
-          <.nav_icon name="hero-document-chart-bar" highlighted={@active_tab == :view_workouts} label="History" />
+          <.nav_icon
+            name="hero-document-chart-bar"
+            highlighted={@active_tab == :view_workouts}
+            label="History"
+          />
         </.link>
         <.link patch={~p"/charts"} class="w-full">
           <.nav_icon name="hero-chart-bar" highlighted={@active_tab == :view_charts} label="Charts" />
