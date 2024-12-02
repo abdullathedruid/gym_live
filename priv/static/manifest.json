@@ -2,7 +2,7 @@
   "name": "GymLive",
   "short_name": "GymLive",
   "description": "Track your workouts and progress in real-time",
-  "start_url": "/",
+  "start_url": "/workouts",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
