@@ -1,5 +1,4 @@
-let Hooks={}
-Hooks.Chart = {
+const Chart = {
     mounted() {
         const chartConfig = JSON.parse(this.el.dataset.config)
         const seriesData = JSON.parse(this.el.dataset.series)
@@ -31,7 +30,7 @@ Hooks.Chart = {
 
         let chart = new ApexCharts(this.el, options)
         chart.render()
-    }
+    },
 }
 
-export default Hooks;
+export default Chart
