@@ -32,7 +32,12 @@ defmodule GymLiveWeb.Live.Workouts.EditWorkout do
 
   def render(assigns) do
     ~H"""
-    <div :if={@workout} class="flex flex-col min-h-screen bg-gray-50">
+    <div
+      :if={@workout}
+      class="flex flex-col min-h-screen bg-gray-50"
+      id="container"
+      phx-hook="WorkoutForm"
+    >
       <.modal id="cancel-modal">
         <p>
           Are you sure you want to abandon your workout? Your workout data will be lost.
@@ -185,7 +190,32 @@ defmodule GymLiveWeb.Live.Workouts.EditWorkout do
       |> Map.put(:action, :insert)
       |> to_form()
 
+    {:noreply,
+     assign(socket, form: form)
+     |> push_event("persist_form", %{
+       exercise: params["exercise"],
+       weight: params["weight"],
+       reps: params["reps"],
+       workout_id: socket.assigns.workout.id
+     })}
+  end
+
+  def handle_event(
+        "restore_form",
+        params = %{"workout_id" => workout_id},
+        socket = %{assigns: %{workout: %Workout{id: workout_id}}}
+      ) do
+    form =
+      %Set{}
+      |> Training.change_set(params)
+      |> Map.put(:action, :insert)
+      |> to_form()
+
     {:noreply, assign(socket, form: form)}
+  end
+
+  def handle_event("restore_form", _params, socket) do
+    {:noreply, socket}
   end
 
   def handle_event("save_set", %{"set" => params}, socket) do
