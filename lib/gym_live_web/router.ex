@@ -69,6 +69,7 @@ defmodule GymLiveWeb.Router do
     pipe_through [:browser]
 
     get "/frames/last-workout/:userid", FrameController, :last_workout
+    get "/workouts/:id/image", WorkoutImageController, :show
     delete "/users/log_out", UserSessionController, :delete
 
     live_session :current_user,
